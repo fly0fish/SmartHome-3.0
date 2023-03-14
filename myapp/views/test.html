@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Temperature & Humidity Control</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<style>
+		#temp-humidity {
+			width: 300px;
+			height: 300px;
+			border: 1px solid #ced4da;
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: center;
+			margin: auto;
+			margin-top: 50px;
+		}
+
+		#temp,
+		#humidity {
+			height: 50px;
+			background-color: #f8f9fa;
+			border: 1px solid #ced4da;
+			font-size: 24px;
+			text-align: center;
+			width: 100%;
+		}
+
+		#temp-range,
+		#humidity-range {
+			width: 100%;
+		}
+
+		#temp-label,
+		#humidity-label {
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div id="temp-humidity">
+			<div id="temp"></div>
+			<input type="range" id="temp-range" min="0" max="100" value="50" />
+			<label for="temp-range" id="temp-label">Temperature</label>
+			<div id="humidity"></div>
+			<input type="range" id="humidity-range" min="0" max="100" value="50" />
+			<label for="humidity-range" id="humidity-label">Humidity</label>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	<script>
+		const tempRange = document.getElementById('temp-range');
+		const humidityRange = document.getElementById('humidity-range');
+		const tempDisplay = document.getElementById('temp');
+		const humidityDisplay = document.getElementById('humidity');
+
+		function updateTemp() {
+			const value = tempRange.value;
+			tempDisplay.textContent = `${value}°C`;
+		}
+
+		function updateHumidity() {
+			const value = humidityRange.value;
+			humidityDisplay.textContent = `${value}%`;
+		}
+
+		tempRange.addEventListener('input', updateTemp);
+		humidityRange.addEventListener('input', updateHumidity);
+
+		updateTemp();
+		updateHumidity();
+	</script>
+</body>
+</html>

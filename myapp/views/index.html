@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Smart Home</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="/stylesheets/fontawesome.min.css" />
+    <!-- <link rel="stylesheet" href="/stylesheets/all.min.css"> -->
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="/stylesheets/templatemo-style.css" />
+    <!-- 天气css -->
+    <link
+      href="/stylesheets/tqstyle.css"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
+    <link
+      href="/stylesheets/owl.carousel.css"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
+    <link rel="stylesheet" href="/stylesheets/tem.css" />
+  </head>
+
+  <body id="reportsPage">
+    <div class="" id="home">
+      <nav class="navbar navbar-expand-xl">
+        <div class="container h-100">
+          <a class="navbar-brand" href="/index">
+            <h1 class="tm-site-title mb-0">智能家居管理平台</h1>
+          </a>
+          <button
+            class="navbar-toggler ml-auto mr-0"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars tm-nav-icon"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto h-100">
+              <li class="nav-item">
+                <a class="nav-link active" href="/index">
+                  <i class="fas fa-home"></i>
+                  主页
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/report">
+                  <i class="far fa-file-alt"></i>
+                  信息
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/products">
+                  <i class="fas fa-shopping-cart"></i>
+                  管理
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts">
+                  <i class="far fa-user"></i>
+                  账户
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-cog"></i>
+                  设置
+                </a>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <% if(user) { %>
+              <div class="tm-gray-circle-layout">
+                <img
+                  src="/images/account.jpg"
+                  alt="Avatar Image"
+                  class="rounded-circle"
+                />
+              </div>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link-layout dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <%= user.userName %> <i class="fas fa-angle-down"></i
+                  ></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/accounts">个人中心</a>
+                  <a class="dropdown-item" href="/index/logoff">退出登录</a>
+                </div>
+              </li>
+              <!-- </li> -->
+              <% } else { %>
+              <li>
+                <a href="/login" class="nav-link d-block">您好，请登录</a>
+              </li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <% if(user){ %>
+            <p class="text-white mt-5 mb-5">
+              欢迎回来, <b><%= user.userName %></b>
+            </p>
+            <% }else{ %>
+            <p class="text-white mt-5 mb-5"></p>
+            <% } %>
+          </div>
+        </div>
+        <!-- row -->
+        <div class="row tm-content-row">
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="agileits_w3layouts_main_grid_left">
+              <div class="wthree_main_grid agileinfo_main_grid">
+                <div class="w3ls_main_grid">
+                  <div class="agileits_main_grid_left">
+                    <div class="agileits_main_grid_leftl">
+                      <h3>10<span>°</span></h3>
+                    </div>
+                    <div class="agileits_main_grid_leftr">
+                      <h4>晴</h4>
+                      <p>今日, 宜春</p>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                  <div class="agileits_main_grid_right">
+                    <p>10:22 AM</p>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <div class="w3l_main_grid_list">
+                  <ul id="owl-demo" class="owl-carousel owl-theme">
+                    <li>
+                      <h4>Fri</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/1.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>27° <span>15°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Sat</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/2.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>12° <span>20°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Sun</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/3.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>15° <span>10°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Mon</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/4.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>20° <span>18°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Tue</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/5.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>15° <span>15°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Wed</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/6.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>10° <span>12°</span></h5>
+                    </li>
+                    <li>
+                      <h4>Thu</h4>
+                      <div class="w3layouts_icon">
+                        <img
+                          src="/images/7.png"
+                          alt=" "
+                          class="w3_img_responsive"
+                        />
+                      </div>
+                      <h5>12° <span>10°</span></h5>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="tm-bg-primary-dark tm-block"></div>
+                        <h2 class="tm-block-title">Latest Hits</h2>
+                        <canvas id="lineChart"></canvas>
+                    </div> -->
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col-tem">
+            <div class="tm-bg-primary-dark-tem tm-block">
+              <h2 class="tm-block-title-tem">室内温湿度</h2>
+              <div class="tm-temp-humidity">
+                <div class="tm-tem-img">
+                  <div class="tm-tem-img-location">
+                    <i
+                      class="fas fa-thermometer-half fa-4x"
+                      style="color: white"
+                    ></i>
+                  </div>
+                  <div>
+                    <i class="fas fa-tint fa-4x" style="color: white"></i>
+                  </div>
+                </div>
+                <div class="tm-current">
+                  <div class="tm-current-temp">
+                    <label
+                      for="temp-range"
+                      id="temp-label"
+                      class="tm-slider-label"
+                      >当前温度：</label
+                    >
+                    <span id="current-temp"></span>
+                  </div>
+                  <div class="tm-current-humidity">
+                    <label
+                      for="humidity-range"
+                      id="humidity-label"
+                      class="tm-slider-label"
+                      >当前湿度：</label
+                    >
+                    <span id="current-humidity"></span>
+                  </div>
+                </div>
+                <div class="tm-slider">
+                  <div class="tm-temp-slider">
+                    <label for="temp-range" class="tm-slider-label" id="temp"
+                      >调整温度：</label
+                    >
+                    <input
+                      type="range"
+                      id="temp-range"
+                      class="tm-range-slider"
+                      min="16"
+                      max="30"
+                      value="25"
+                    />
+                  </div>
+                  <div class="tm-humidity-slider">
+                    <label
+                      for="humidity-range"
+                      class="tm-slider-label"
+                      id="humidity"
+                      >调整湿度：</label
+                    >
+                    <input
+                      type="range"
+                      id="humidity-range"
+                      class="tm-range-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    value="保存设置"
+                    class="tm-temper-btn"
+                    onclick="handleClick(this)"
+                  >
+                    保存设置
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block">
+                        <h2 class="tm-block-title">Performance</h2>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div> -->
+          <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller">
+              <!-- <div>
+                <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                <span class="tm-block-text">客厅灯</span>
+                <input type="checkbox" name="" id="custom1" />
+                <label for="custom1" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                <span class="tm-block-text">卧室灯</span>
+                <input type="checkbox" name="" id="custom2" />
+                <label for="custom2" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                <span class="tm-block-text">厨房灯</span>
+                <input type="checkbox" name="" id="custom3" />
+                <label for="custom3" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                <span class="tm-block-text">浴室灯</span>
+                <input type="checkbox" name="" id="custom4" />
+                <label for="custom4" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div> -->
+              <div>
+                <i class="fas fa-tv fa-lg" style="color: white"></i>
+                <span class="tm-block-text">客厅电视</span>
+                <input type="checkbox" name="" id="custom5" />
+                <label for="custom5" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-store fa-lg" style="color: white"></i>
+                <span class="tm-block-text">窗帘</span>
+                <input type="checkbox" name="" id="custom6" />
+                <label for="custom6" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-door-closed fa-lg" style="color: white"></i>
+                <span class="tm-block-text">门禁</span>
+                <input type="checkbox" name="" id="custom7" />
+                <label for="custom7" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-snowflake fa-lg" style="color: white"></i>
+                <span class="tm-block-text">空调</span>
+                <input type="checkbox" name="" id="custom9" />
+                <label for="custom9" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-bath fa-lg" style="color: white"></i>
+                <span class="tm-block-text">洗浴</span>
+                <input type="checkbox" name="" id="custom8" />
+                <label for="custom8" class="check-box">
+                  <span class="check-handler"></span>
+                </label>
+              </div>
+              <div class="tm-block-div">
+                <i
+                  class="fas fa-thermometer-half fa-lg"
+                  style="color: white"
+                ></i>
+                <span class="tm-block-text">洗浴水温</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-fire fa-lg" style="color: white"></i>
+                <span class="tm-block-text">火灾预警</span>
+                <span class="tm-block-text-right">正常</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller">
+              <div>
+                <i class="fas fa-wifi fa-lg" style="color: white"></i>
+                <span class="tm-block-text">WiFi状态</span>
+                <span class="tm-block-text-right">已连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-mobile fa-lg" style="color: white"></i>
+                <span class="tm-block-text">phone</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-archive fa-lg" style="color: white"></i>
+                <span class="tm-block-text">冰箱</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-music fa-lg" style="color: white"></i>
+                <span class="tm-block-text">音乐</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-camera fa-lg" style="color: white"></i>
+                <span class="tm-block-text">家庭监控</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-plus fa-lg" style="color: white"></i>
+                <a class="tm-block-a" href="products.html">更多设备</a>
+              </div>
+              <!-- <h2 class="tm-block-title">Storage Information</h2>
+                        <div id="pieChartContainer">
+                            <canvas id="pieChart" class="chartjs-render-monitor" width="200" height="200"></canvas>
+                        </div>                         -->
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
+                <h2 class="tm-block-title-tem">灯光控制</h2>
+                <div class="tm-block-div-l">
+                    <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">客厅灯</span>
+                    <input type="checkbox" name="" id="custom1" />
+                    <label for="custom1" class="check-box">
+                      <span class="check-handler"></span>
+                    </label>
+                  </div>
+                  <div class="tm-block-div-l">
+                    <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">卧室灯</span>
+                    <input type="checkbox" name="" id="custom2" />
+                    <label for="custom2" class="check-box">
+                      <span class="check-handler"></span>
+                    </label>
+                  </div>
+                  <div class="tm-block-div tm-block-div-l">
+                    <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">厨房灯</span>
+                    <input type="checkbox" name="" id="custom3" />
+                    <label for="custom3" class="check-box">
+                      <span class="check-handler"></span>
+                    </label>
+                  </div>
+                  <div class="tm-block-div tm-block-div-l">
+                    <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">浴室灯</span>
+                    <input type="checkbox" name="" id="custom4" />
+                    <label for="custom4" class="check-box">
+                      <span class="check-handler"></span>
+                    </label>
+                  </div>
+                  <h2 class="light-title">模式选择</h2>
+            </div>
+          </div>
+          <div class="col-12 tm-block-col">
+            <div
+              id="main"
+              class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll"
+            >
+              <!-- <h2 class="tm-block-title">Orders List</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ORDER NO.</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">OPERATORS</th>
+                                    <th scope="col">LOCATION</th>
+                                    <th scope="col">DISTANCE</th>
+                                    <th scope="col">START DATE</th>
+                                    <th scope="col">EST DELIVERY DUE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><b>#122349</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>Oliver Trag</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>485 km</b></td>
+                                    <td>16:00, 12 NOV 2018</td>
+                                    <td>08:00, 18 NOV 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122348</b></th>
+                                    <td>
+                                        <div class="tm-status-circle pending">
+                                        </div>Pending
+                                    </td>
+                                    <td><b>Jacob Miller</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>360 km</b></td>
+                                    <td>11:00, 10 NOV 2018</td>
+                                    <td>04:00, 14 NOV 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122347</b></th>
+                                    <td>
+                                        <div class="tm-status-circle cancelled">
+                                        </div>Cancelled
+                                    </td>
+                                    <td><b>George Wilson</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>340 km</b></td>
+                                    <td>12:00, 22 NOV 2018</td>
+                                    <td>06:00, 28 NOV 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122346</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>William Aung</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>218 km</b></td>
+                                    <td>15:00, 10 NOV 2018</td>
+                                    <td>09:00, 14 NOV 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122345</b></th>
+                                    <td>
+                                        <div class="tm-status-circle pending">
+                                        </div>Pending
+                                    </td>
+                                    <td><b>Harry Ryan</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>280 km</b></td>
+                                    <td>15:00, 11 NOV 2018</td>
+                                    <td>09:00, 17 NOV 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122344</b></th>
+                                    <td>
+                                        <div class="tm-status-circle pending">
+                                        </div>Pending
+                                    </td>
+                                    <td><b>Michael Jones</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>218 km</b></td>
+                                    <td>18:00, 12 OCT 2018</td>
+                                    <td>06:00, 18 OCT 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122343</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>Timmy Davis</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>218 km</b></td>
+                                    <td>12:00, 10 OCT 2018</td>
+                                    <td>08:00, 18 OCT 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122342</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>Oscar Phyo</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>420 km</b></td>
+                                    <td>15:30, 06 OCT 2018</td>
+                                    <td>09:30, 16 OCT 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122341</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>Charlie Brown</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>300 km</b></td>
+                                    <td>11:00, 10 OCT 2018</td>
+                                    <td>03:00, 14 OCT 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122340</b></th>
+                                    <td>
+                                        <div class="tm-status-circle cancelled">
+                                        </div>Cancelled
+                                    </td>
+                                    <td><b>Wilson Cookies</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>218 km</b></td>
+                                    <td>17:30, 12 OCT 2018</td>
+                                    <td>08:30, 22 OCT 2018</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>#122339</b></th>
+                                    <td>
+                                        <div class="tm-status-circle moving">
+                                        </div>Moving
+                                    </td>
+                                    <td><b>Richard Clamon</b></td>
+                                    <td><b>London, UK</b></td>
+                                    <td><b>150 km</b></td>
+                                    <td>15:00, 12 OCT 2018</td>
+                                    <td>09:20, 26 OCT 2018</td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="tm-footer row tm-mt-small">
+        <div class="col-12 font-weight-light">
+          <p class="text-center text-white mb-0 px-4 small">
+            Copyright &copy; <b>2018</b> All rights reserved. Design:
+            <a
+              rel="nofollow noopener"
+              href="https://templatemo.com"
+              class="tm-footer-link"
+              >Template Mo</a
+            >
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/javascripts/echarts.min.js"></script>
+    <script src="/javascripts/index.js"></script>
+    <script src="/javascripts/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="/javascripts/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="/javascripts/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="/javascripts/tooplate-scripts.js"></script>
+    <!-- 天气相关 -->
+    <script src="/javascripts/jquery-2.2.3.min.js"></script>
+    <script src="/javascripts/owl.carousel.js"></script>
+
+    <script>
+      Chart.defaults.global.defaultFontColor = "white";
+      let ctxLine,
+        ctxBar,
+        ctxPie,
+        optionsLine,
+        optionsBar,
+        optionsPie,
+        configLine,
+        configBar,
+        configPie,
+        lineChart,
+        barChart,
+        pieChart;
+      // DOM is ready
+      $(function () {
+        drawLineChart(); // Line Chart
+        //drawBarChart(); // Bar Chart
+        //drawPieChart(); // Pie Chart
+
+        $(window).resize(function () {
+          updateLineChart();
+          //updateBarChart();
+        });
+      });
+
+      //天气
+      $(document).ready(function () {
+        $("#owl-demo,#owl-demo1,#owl-demo3,#owl-demo4").owlCarousel({
+          autoPlay: 3000, //Set AutoPlay to 3 seconds
+
+          items: 4,
+          itemsDesktop: [768, 3],
+          itemsDesktopSmall: [414, 2],
+        });
+      });
+
+      function handleClick(btn) {
+        btn.classList.add("clicked");
+        setTimeout(() => {
+          btn.classList.remove("clicked");
+        }, 200);
+      }
+    </script>
+    <script>
+      // 获取温度和湿度的DOM元素
+      const tempElement = document.getElementById("temp");
+      const humidityElement = document.getElementById("humidity");
+
+      // 获取温度和湿度的滑动条DOM元素
+      const tempRangeElement = document.getElementById("temp-range");
+      const humidityRangeElement = document.getElementById("humidity-range");
+
+      // 初始化温度和湿度的值
+      let tempValue = 25;
+      let humidityValue = 50;
+
+      // 更新温度和湿度的显示
+      function updateTempAndHumidity() {
+        tempElement.textContent = `设置温度：${tempValue} °C`;
+        humidityElement.textContent = `设置湿度：${humidityValue} %`;
+      }
+
+      // 监听温度和湿度的滑动条变化
+      tempRangeElement.addEventListener("input", function (event) {
+        tempValue = parseInt(event.target.value);
+        updateTempAndHumidity();
+      });
+
+      humidityRangeElement.addEventListener("input", function (event) {
+        humidityValue = parseInt(event.target.value);
+        updateTempAndHumidity();
+      });
+
+      // 更新温度和湿度的初始值
+      updateTempAndHumidity();
+    </script>
+  </body>
+</html>

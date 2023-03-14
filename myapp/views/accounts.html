@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Accounts</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="/stylesheets/fontawesome.min.css" />
+    <!-- https://fontawesome.com/ -->
+    <link
+      rel="stylesheet"
+      href="/stylesheets/jquery-ui-datepicker/jquery-ui.min.css"
+      type="text/css"
+    />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="/stylesheets/templatemo-style.css" />
+
+    <link rel="stylesheet" href="/stylesheets/file.css" />
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+  </head>
+
+  <body id="reportsPage">
+    <div class="" id="home">
+      <nav class="navbar navbar-expand-xl">
+        <div class="container h-100">
+          <a class="navbar-brand" href="/index">
+            <h1 class="tm-site-title mb-0">智能家居管理平台</h1>
+          </a>
+          <button
+            class="navbar-toggler ml-auto mr-0"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars tm-nav-icon"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto h-100">
+              <li class="nav-item">
+                <a class="nav-link" href="/index">
+                  <i class="fas fa-home"></i> 主页
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/report">
+                  <i class="far fa-file-alt"></i>
+                  信息
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/products">
+                  <i class="fas fa-shopping-cart"></i> 管理
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" href="/accounts">
+                  <i class="far fa-user"></i> 账户
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-cog"></i>
+                  <span> 设置 <i class="fas fa-angle-down"></i> </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">联系我们</a>
+                </div>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <% if(user) { %>
+              <div class="tm-gray-circle-layout">
+                <img
+                  src="/images/account.jpg"
+                  alt="Avatar Image"
+                  class="rounded-circle"
+                />
+              </div>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link-layout dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <%= user.userName %> <i class="fas fa-angle-down"></i>
+                  </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/accounts">个人中心</a>
+                  <a class="dropdown-item" href="/index/logoff">退出登录</a>
+                </div>
+              </li>
+              <!-- </li> -->
+              <% } else { %>
+              <li>
+                <a href="/login" class="nav-link d-block">您好，请登录</a>
+              </li>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container mt-5">
+        <!-- <div class="row tm-content-row">
+          <div class="col-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+              <h2 class="tm-block-title">List of Accounts</h2>
+              <p class="text-white">Accounts</p>
+              <select class="custom-select">
+                <option value="0">Select account</option>
+                <option value="1">Admin</option>
+                <option value="2">Editor</option>
+                <option value="3">Merchant</option>
+                <option value="4">Customer</option>
+              </select>
+            </div>
+          </div>
+        </div> -->
+        <!-- row -->
+        <div class="row tm-content-row">
+          <div class="tm-block-col tm-col-avatar">
+            <div class="tm-bg-primary-dark tm-block tm-block-avatar">
+              <h2 class="tm-block-title">用户照片</h2>
+              <div class="tm-avatar-container">
+                <% if(img){ %>
+                <img
+                  src="<%= img %>"
+                  alt="Avatar"
+                  class="tm-avatar img-fluid mb-4"
+                />
+                <% }else{ %>
+                <img
+                  src="/images/user1.jpg"
+                  alt="Avatar"
+                  class="tm-avatar img-fluid mb-4"
+                />
+                <% } %>
+              </div>
+              <!-- 上传图片，表单一定要有name属性，要不后端收不到 -->
+              <form
+                action="/accounts/update-image"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <!-- required属性表示只有选择了文件才能提交表单 -->
+                <input id="fileInput" type="file" name="pic" required />
+                <button
+                  class="btn btn-primary btn-block text-uppercase"
+                  type="submit"
+                >
+                  上传新照片
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="tm-block-col tm-col-account-settings">
+            <div class="tm-bg-primary-dark tm-block tm-block-settings">
+              <h2 class="tm-block-title">账户信息</h2>
+              <form
+                action="/accounts/update-inform"
+                method="post"
+                class="tm-signup-form row"
+              >
+                <% if(user) { %>
+                <div class="form-group col-lg-6">
+                  <label for="name">用户名（不可修改）</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value="<%= user.userName %>"
+                    class="form-control validate"
+                    readonly
+                  />
+                </div>
+                <% }else{ %>
+                <div class="form-group col-lg-6">
+                  <label for="name">用户名</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="form-control validate"
+                  />
+                </div>
+                <% } %> <% if(inform){ %>
+                <!-- 一个对象有多个数据必须用forEach遍历 -->
+                <% inform.forEach(items=> { %>
+                <div class="form-group col-lg-6">
+                  <label for="email">用户 Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value="<%= items.email %>"
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="password">密码</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value=""
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="sex">性别</label>
+                  <input
+                    id="sex"
+                    name="sex"
+                    type="text"
+                    value="<%= items.sex %>"
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="date">出生日期</label>
+                  <input
+                    id="date"
+                    name="date"
+                    type="text"
+                    value="<%= items.birthday %>"
+                    class="form-control validate"
+                  />
+                  <!-- <input
+                    id="date"
+                    name="date"
+                    type="text"
+                    class="form-control validate"
+                  /> -->
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="phone">手机号码</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value="<%= items.phone %>"
+                    class="form-control validate"
+                  />
+                </div>
+                <% }); %> <% }else{ %>
+                <div class="form-group col-lg-6">
+                  <label for="email">用户 Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="password">密码</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="sex">性别</label>
+                  <input
+                    id="sex"
+                    name="sex"
+                    type="text"
+                    class="form-control validate"
+                  />
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="date">出生日期</label>
+                  <input
+                    id="date"
+                    name="date"
+                    type="text"
+                    class="form-control validate"
+                    data-large-mode="true"
+                  />
+                  <!-- <input
+                      id="date"
+                      name="date"
+                      type="text"
+                      class="form-control validate"
+                    /> -->
+                </div>
+                <div class="form-group col-lg-6">
+                  <label for="phone">手机号码</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    class="form-control validate"
+                  />
+                </div>
+                <% } %>
+                <div class="form-group col-12">
+                  <label class="tm-hide-sm">&nbsp;</label>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block text-uppercase"
+                  >
+                    修改信息
+                  </button>
+                </div>
+                <div class="col-12">
+                  <button type="button"
+                    class="btn btn-primary btn-block text-uppercase tm-user-delete-link"
+                  >
+                    删除该账户
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="tm-footer row tm-mt-small">
+        <div class="col-12 font-weight-light">
+          <p class="text-center text-white mb-0 px-4 small">
+            Copyright &copy; <b>2018</b> All rights reserved. Design:
+            <a rel="nofollow noopener" class="tm-footer-link">FlyFish</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/javascripts/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="/stylesheets/jquery-ui-datepicker/jquery-ui.min.js"></script>
+    <!-- https://jqueryui.com/download/ -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script>
+      $(function () {
+        $("#date").datepicker();
+      });
+
+      //删除用户
+      $(".tm-user-delete-link").on("click", function () {
+        var con = confirm("确定要删除吗？");
+        if (con) {
+
+          $.ajax({
+            type: "GET",
+            url: "/accounts/del-user",
+            success: function (result) {
+              alert(result);
+              window.location.href = "/login";
+            },
+            error: function (error) {
+              console.log("error");
+              alert("错误：删除失败！");
+            },
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

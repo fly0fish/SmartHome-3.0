@@ -1,0 +1,80 @@
+<h2 class="tm-block-title">家庭成员</h2>
+              <div class="tm-notification-items">
+                <div class="media tm-notification-item">
+                  <div class="tm-gray-circle">
+                    <img
+                      src="/images/user.jpg"
+                      alt="Avatar Image"
+                      class="rounded-circle"
+                    />
+                  </div>
+                  <div class="media-body">
+                    <p class="mb-2"><b>Admin</b></p>
+                    <p class="mb-2">
+                      <b>状态：</b><b class="tm-notification-link">外出</b>
+                    </p>
+                    <span class="tm-small tm-text-color-secondary"
+                      >2小时前在家</span
+                    >
+                  </div>
+                </div>
+                <div class="media tm-notification-item">
+                  <div class="tm-gray-circle">
+                    <img
+                      src="/images/user.jpg"
+                      alt="Avatar Image"
+                      class="rounded-circle"
+                    />
+                  </div>
+                  <div class="media-body">
+                    <p class="mb-2">
+                      <b>Oliver Too</b> and <b>6 others</b> sent you existing
+                      <a href="#" class="tm-notification-link"
+                        >product updates</a
+                      >. Read more reports.
+                    </p>
+                    <span class="tm-small tm-text-color-secondary"
+                      >6h ago.</span
+                    >
+                  </div>
+                </div>
+                <div class="media tm-notification-item">
+                  <div class="tm-gray-circle">
+                    <img
+                      src="/images/user.jpg"
+                      alt="Avatar Image"
+                      class="rounded-circle"
+                    />
+                  </div>
+                  <div class="media-body">
+                    <p class="mb-2">
+                      <b>Victoria</b> and <b>6 others</b> sent you
+                      <a href="#" class="tm-notification-link">order updates</a
+                      >. Read order information.
+                    </p>
+                    <span class="tm-small tm-text-color-secondary"
+                      >6h ago.</span
+                    >
+                  </div>
+                </div>
+                <div class="media tm-notification-item">
+                  <div class="tm-gray-circle">
+                    <img
+                      src="/images/user.jpg"
+                      alt="Avatar Image"
+                      class="rounded-circle"
+                    />
+                  </div>
+                  <div class="media-body">
+                    <p class="mb-2">
+                      <b>Laura Cute</b> and <b>6 others</b> sent you
+                      <a href="#" class="tm-notification-link"
+                        >product records</a
+                      >.
+                    </p>
+                    <span class="tm-small tm-text-color-secondary"
+                      >6h ago.</span
+                    >
+                  </div>
+                </div>
+              </div>

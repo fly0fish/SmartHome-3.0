@@ -1,0 +1,30 @@
+#fileInput {
+    position: relative;
+    display: inline-block;
+    background-color: #f5a623;
+    color: #eee;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 97%;
+    font-weight: 600;
+  }
+  
+  #fileInput::before {
+    content: "选择文件";
+  }
+  
+  #fileInput:hover {
+    background-color: #e0e0e0;
+  }
+  
+  #fileInput:focus {
+    outline: none;
+  }
+  
+  #fileInput::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  

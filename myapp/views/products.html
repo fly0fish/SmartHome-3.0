@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Product Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+  <!-- https://fonts.google.com/specimen/Roboto -->
+  <link rel="stylesheet" href="/stylesheets/fontawesome.min.css" />
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+  <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" href="/stylesheets/templatemo-style.css">
+  <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+</head>
+
+<body id="reportsPage">
+  <nav class="navbar navbar-expand-xl">
+    <div class="container h-100">
+      <a class="navbar-brand" href="/index">
+        <h1 class="tm-site-title mb-0">智能家居管理平台</h1>
+      </a>
+      <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars tm-nav-icon"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto h-100">
+          <li class="nav-item">
+            <a class="nav-link" href="/index">
+              <i class="fas fa-home"></i> 主页
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/report">
+              <i class="far fa-file-alt"></i>
+              信息
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/products">
+              <i class="fas fa-shopping-cart"></i> 管理
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/accounts">
+              <i class="far fa-user"></i> 账户
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-cog"></i>
+              设置
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <% if(user) { %>
+            <div class="tm-gray-circle-layout"><img src="/images/account.jpg" alt="Avatar Image" class="rounded-circle">
+            </div>
+            <li class="nav-item dropdown">
+              <a class="nav-link-layout dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>
+                  <%= user.userName %> <i class="fas fa-angle-down"></i>
+                </span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/accounts">个人中心</a>
+                <a class="dropdown-item" href="/index/logoff">退出登录</a>
+              </div>
+            </li>
+            <!-- </li> -->
+            <% } else { %>
+              <li>
+                <a href="/login" class="nav-link d-block">您好，请登录</a>
+              </li>
+              <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-5">
+    <div class="row tm-content-row">
+      <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-products">
+          <h2 class="tm-block-title-products">设备列表</h2>
+          <div class="tm-product-table-container">
+            <table class="table table-hover tm-table-small tm-product-table">
+              <thead>
+                <tr>
+                  <th scope="col">&nbsp;</th>
+                  <th scope="col">设备名</th>
+                  <th scope="col">设备id</th>
+                  <th scope="col">运行状态</th>
+                  <th scope="col">添加时间</th>
+                  <th scope="col">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(light){ %>
+                  <% light.forEach(items=> { %>
+                    <tr>
+                      <th scope="row"><input type="checkbox" /></th>
+                      <td class="tm-product-name">
+                        <%= items.name %>
+                      </td>
+                      <td>
+                        <%= items.id %>
+                      </td>
+                      <% if(items.state==1){ %>
+                        <td>正常</td>
+                        <% }else{ %>
+                          <td>未连接</td>
+                          <% } %>
+                            <td>
+                              <%= items.date %>
+                            </td>
+                            <td>
+                              <!-- 下面script要引用a标签的class做点击跳转操作，a标签href属性不能设置为空 -->
+                              <a class="tm-product-delete-link"  data-id="<%= items.id %>">
+                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                              </a>
+                            </td>
+                            <!-- onclick="del()" -->
+                    </tr>
+                    <% }); %>
+                      <% }else{ %>
+                        <tr>
+                          <th scope="row"><input type="checkbox" /></th>
+                          <td class="tm-product-name">无</td>
+                          <td>无</td>
+                          <td>无</td>
+                          <td>无</td>
+                        </tr>
+                        <% } %>
+                          <!-- <tr>
+                    <th scope="row"><input type="checkbox" /></th>
+                    <td class="tm-product-name">Lorem Ipsum Product 7</td>
+                    <td>500</td>
+                    <td>100</td>
+                    <td>10 Feb 2019</td>
+                    <td>
+                      <a href="#" class="tm-product-delete-link">
+                        <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                      </a>
+                    </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+          <!-- table container -->
+          <a href="/products/add-product" class="btn btn-primary btn-block text-uppercase mb-3">添加新设备</a>
+          <!-- <button class="btn btn-primary btn-block text-uppercase">
+              Delete selected products
+            </button> -->
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
+          <h2 class="tm-block-title-products">设备统计</h2>
+          <div class="tm-product-table-container">
+            <table class="table tm-table-small tm-product-table">
+              <tbody>
+
+                <% if(category){ %>
+                  <% category.forEach(items=> { %>
+                    <tr>
+                      <td class="tm-product-name">灯光设备</td>
+                      <td class="text-center">
+                        <%= items.light %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="tm-product-name">温湿度设备</td>
+                      <td class="text-center">
+                        <%= items.dht11 %>
+                      </td>
+                    </tr>
+                    <% }); %>
+                      <% }else{ %>
+                        <tr>
+                          <td class="tm-product-name">无设备</td>
+                          <td class="text-center">
+                          </td>
+                        </tr>
+                        <% } %>
+                          <!-- <tr>
+                    <td class="tm-product-name">Product Category 7</td>
+                    <td class="text-center">
+                      <a href="#" class="tm-product-delete-link">
+                        <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                      </a>
+                    </td>
+                  </tr> -->
+              </tbody>
+            </table>
+          </div>
+          <!-- table container -->
+          <button class="btn btn-primary btn-block text-uppercase mb-3">
+            更多
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="tm-footer row tm-mt-small">
+    <div class="col-12 font-weight-light">
+      <p class="text-center text-white mb-0 px-4 small">
+        Copyright &copy; <b>2018</b> All rights reserved.
+
+        Design: <a rel="nofollow noopener" class="tm-footer-link">FlyFish</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="/javascripts/jquery-3.3.1.min.js"></script>
+  <!-- https://jquery.com/download/ -->
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <!-- https://getbootstrap.com/ -->
+  <script src="/javascripts/products.js"></script>
+
+  <script>
+    // $(function () {
+    //   $(".tm-product-delete-link").on("click", function () {
+    //     window.location.href = "/products/del-product";
+    //   });
+    // });
+
+    $('.tm-product-delete-link').on("click",function () {
+    
+      var con = confirm('确定要删除吗？');
+      id = $(this).data('id');
+      if(con){
+        // window.location.href = `/products/del-product?id=${id}`;
+
+        $.ajax({
+        type: "POST",
+        url: "/products/del-product",
+        data: {id},
+        success: function (result) {
+          alert(result);
+          window.location.href = "/products";
+        },
+        error: function (error) {
+          console.log("error");
+          alert("错误：数据传输失败！");
+        }
+      });
+
+      // axios({
+      //   method: 'post',
+      //   url: "/products/del-product",
+      //   data: {id},
+      // }),then(res=>{
+      //   console.log(res)
+      // }).catch(error=>{
+      //   console.log(error)
+      // });
+
+      }
+    });
+  </script>
+</body>
+
+</html>
