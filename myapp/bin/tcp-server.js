@@ -5,7 +5,9 @@ const equipmentArray = []
 const TIMEOUT = 30*1000; // 30秒没接收到数据就断开连接
 const mysqlDb = require('./mysql.js')
 const websocket = require('./websocket.js')
-const tcpClient = require('./tcp-client.js')
+const tcpClient = require('./tcp-client.js');
+const device = require('./device.js')
+const { dhtData } = require('./device.js');
 
 
 //创建服务器对象
@@ -16,30 +18,60 @@ const server = net.createServer((socket)=>{
 
   // receive data
   socket.on("data",data=>{
-	// 将接收到的数据作为最新的数据
-	let str = addr+" --> " + data.toString('ascii')
-	socket.lastValue = data.toString('ascii')
-	console.log(str)
+	if(!socket.id){
+		//接收的第一条数据作为其设备id
+		socket.id = data.toString('ascii')
+		console.log(socket.id)
 
-    // 如果该socket没有id，就把当前数据赋值为id
-	// 等效于接收的第一条数据作为其设备id
-    if(!socket.id){
-			socket.id = data.toString('ascii')
-			socket.addr = addr
-			addEquipment(socket)
-		}
-		else{
-			//保存所接收到的数据
-			// date=new Date()
-			mysqlDb.mysql.insert([socket.id,socket.lastValue],function (err) {
-				if(err){
-					// 保存数据失败只会影响历史数据的呈现。
-					console.log(socket.id,"保存数据失败：",err)
-				}
-			})
-			//发送websocket消息 
-			websocket.sendData(socket.id,socket.lastValue)
-		}
+		//设备地址
+		socket.addr = addr
+
+		//将设备socket存入列表
+		addEquipment(socket)
+
+		//存储连接到服务器的设备信息
+		device.dhtConn(socket.id)
+	}else{
+		const json = JSON.parse(data);
+
+		// 将接收到的数据作为最新的数据
+		// let str = addr+" --> " + "tem:" + json.tem + "  " + "hum:" + json.hum
+		socket.lastValue = json
+		// console.log(str)
+
+		//存储温湿度数据
+		device.dhtData(socket.id,json.tem,json.hum)
+
+		//发送websocket消息 
+		websocket.sendData(socket.id,socket.lastValue)
+	}
+	
+
+    // // 如果该socket没有id，就把当前数据赋值为id
+	// // 等效于接收的第一条数据作为其设备id
+    // if(!socket.id){
+	// 		socket.id = data.toString('ascii')
+	// 		socket.addr = addr
+	// 		addEquipment(socket)
+	// 	}
+	// 	else{
+	// 		//保存所接收到的数据
+	// 		// date=new Date()
+
+	// 		let dhtData = {
+	// 			tem: null,
+	// 			hum: null
+	// 		}
+
+	// 		mysqlDb.mysql.insert([socket.id,socket.lastValue],function (err) {
+	// 			if(err){
+	// 				// 保存数据失败只会影响历史数据的呈现。
+	// 				console.log(socket.id,"保存数据失败：",err)
+	// 			}
+	// 		})
+	// 		//发送websocket消息 
+	// 		websocket.sendData(socket.id,socket.lastValue)
+	// 	}
   })
 
   // close
@@ -72,10 +104,10 @@ server.on("error",(err)=>{
 server.listen({port: PORT,host: '0.0.0.0'}, () => {
 	console.log('TCP服务器 启动：', server.address())
 	
-	// 5秒后启动demo2 tcp client 以生成数据。
+	// 2秒后启动demo2 tcp client 以生成数据。
 	setTimeout(() => {
 		tcpClient.init()
-	}, 5000);
+	}, 2000);
 
 
 })

@@ -27,13 +27,32 @@ connPool.getConnection(function (err, client) {
 
 
 //增添数据
-mysql.insert = function (data, callback) {
+mysql.insert = function (sql,data, callback) {
   if (mysql.dbClient) {
 
-    var addSql = 'INSERT INTO dht11_data(devId,tem) VALUES(?,?)';
     var addSqlParams = data;
 
-    mysql.dbClient.query(addSql, addSqlParams, function (err, result) {
+    mysql.dbClient.query(sql, addSqlParams, function (err, result) {
+      // 如果在执行上述查询时出现任何错误，则抛出错误
+      if (err) {
+        callback(err)
+      }
+      // 如果没有错误，得到结果
+      callback(null, result);
+    });
+  }
+  else {
+    callback('mysql is not connected!')
+  }
+}
+
+//修改数据
+mysql.update = function (sql,data, callback) {
+  if (mysql.dbClient) {
+
+    var addSqlParams = data;
+
+    mysql.dbClient.query(sql, addSqlParams, function (err, result) {
       // 如果在执行上述查询时出现任何错误，则抛出错误
       if (err) {
         callback(err)
@@ -63,7 +82,7 @@ mysql.find = function (data, callback) {
     });
   }
   else {
-    callback('mongodb is not connected!')
+    callback('mysql is not connected!')
   }
 
 }

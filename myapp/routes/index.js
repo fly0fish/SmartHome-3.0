@@ -32,7 +32,7 @@ router.get('/',function(req, res, next) {
     });
   }else{
     // console.log(user);
-    res.render('index',{user:req.session.user});
+    res.render('index',{user:null});
   }
   
 });
@@ -41,8 +41,28 @@ router.get('/',function(req, res, next) {
 // GET /equipmentId/id
 router.get('/equipmentId/:id', function(req, res, next) {
 
-  res.render('index',{user:req.session.user});
-  
+  var userName = req.session.user?.userName;
+
+  var id = req.params.id;//获取路由中的设备id
+
+  if(userName){
+  mysql.connPool.getConnection(function (err, connection) {
+    //查询用户温湿度
+    connection.query(
+        'SELECT tem,hum FROM dht11_data WHERE devId = ? ORDER BY id DESC LIMIT 1;'
+
+        , [id], function (err, data) {
+            if (err) {
+                throw err;
+            }else{
+              console.log(data);
+              res.render('index',{user: req.session.user,dht: data});
+            }
+        });
+  });
+  }else{
+    res.redirect('/index');
+  }
 });
 
 router.get('/logoff', function(req, res, next) {

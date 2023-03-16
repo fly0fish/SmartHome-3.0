@@ -23,7 +23,7 @@ socket.onmessage=function (msg) {
     var data = JSON.parse(msg.data)
     data.forEach(function (d) {
       //将接收到的数据 更新到echart图表里
-      updateMyChart(d.time,d.value)
+      updateMyChart(d.time,d.value.tem,d.value.hum)
     });
   } catch (error) {
     console.log('error:',error)
@@ -74,15 +74,21 @@ var option = {
   color:'#fff',
   textStyle:{
     color:'#fff',
-    fontWeight:900,
-    fontSize:24
+    fontWeight: 900,
+    fontSize: 15
   },
   title: {
-    text: '实时温度',
+    text: '实时温湿度',
+    textStyle:{
+      color:'#fff',
+      fontSize: 24
+    },
+  },
+  legend: {
+    data: ['温度', '湿度'],
     textStyle:{
       color:'#fff'
-    },
-    left:'center'
+    }
   },
   xAxis: {
     type: 'category',
@@ -92,9 +98,18 @@ var option = {
     type: 'value'
   },
   series: [{
+    name: '温度',
     data: [],
     type: 'line',
-    smooth: true
+    smooth: true,
+    color: '#ff9100'
+  },
+  {
+    name: '湿度',
+    data: [],
+    type: 'line',
+    smooth: true,
+    color: '#1aff00'
   }]
 };
 
@@ -102,20 +117,27 @@ var option = {
 myChart.setOption(option);
 
 // 给echart插入新数据
-function updateMyChart(time,val) {
-  var value = Number(val)
+function updateMyChart(time,tem,hum) {
+  var temperature = Number(tem)
+  var humidity = Number(hum)
   //如果value不是数值则跳过
-  if(typeof value !== 'number'){
-    console.log('不是数值，跳过：',value,value instanceof Number)
+  if(typeof temperature !== 'number'){
+    console.log('不是数值，跳过：',temperature,temperature instanceof Number)
+    return ;
+  }
+  if(typeof humidity !== 'number'){
+    console.log('不是数值，跳过：',humidity,humidity instanceof Number)
     return ;
   }
 
   option.xAxis.data.push(time)
-  option.series[0].data.push(value)
+  option.series[0].data.push(temperature)
+  option.series[1].data.push(humidity)
   // 如果数据超过10个，把第一个数据删除。
   if(option.xAxis.data.length > 10){
     option.xAxis.data.shift()
     option.series[0].data.shift()
+    option.series[1].data.shift()
   }
   myChart.setOption(option);
 }
