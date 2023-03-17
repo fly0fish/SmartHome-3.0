@@ -61,6 +61,8 @@ function init(server) {
         let data = JSON.parse(message)
         if(data.equipmentId){
           addWebsocket(data.equipmentId,ws)
+        }else if(data.report){
+          console.log(data.report)
         }
 
       } catch (error) {

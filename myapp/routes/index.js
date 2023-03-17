@@ -32,7 +32,7 @@ router.get('/',function(req, res, next) {
     });
   }else{
     // console.log(user);
-    res.render('index',{user:null});
+    res.render('index',{user:null,dht: null});
   }
   
 });
