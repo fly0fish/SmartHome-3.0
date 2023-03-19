@@ -30,8 +30,9 @@ router.get('/', function (req, res, next) {
                 var fixedPath = null;
               }
               if(result[0].birthday){
-                result.birthday = moment(result[0].birthday).format('MM/DD/YYYY');
+                result[0].birthday = moment(result[0].birthday).format('MM/DD/YYYY');
               }
+              console.log(result)
 
               res.render('accounts', { user: req.session.user,inform: result,img: fixedPath });
             }

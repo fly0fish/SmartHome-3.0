@@ -22,6 +22,19 @@ const server = net.createServer((socket)=>{
 		//接收的第一条数据作为其设备id
 		socket.id = data.toString('ascii')
 		console.log(socket.id)
+		
+		
+
+		device.dhtUser(socket.id,function(err,result){
+			if(err){
+				console.log('查询用户失败')
+			}else{
+				if(!result){
+					socket.end();
+				}
+			}
+		});
+
 
 		//设备地址
 		socket.addr = addr
@@ -32,7 +45,7 @@ const server = net.createServer((socket)=>{
 		//存储连接到服务器的设备信息
 		device.dhtConn(socket.id)
 	}else{
-		const json = JSON.parse(data);
+		const json = JSON.parse(data)
 
 		// 将接收到的数据作为最新的数据
 		// let str = addr+" --> " + "tem:" + json.tem + "  " + "hum:" + json.hum
@@ -154,7 +167,7 @@ function findEquipment(id,addr) {
 	return result
 }
 
-// 在列表中找到某个id的设备，结果为数组，可能包含多个socket。
+// 在列表中找到某个id的设备，结果为数组
 function findEquipmentById(id) {
 	let result = []
 	let i
@@ -168,12 +181,20 @@ function findEquipmentById(id) {
 }
 
 // 给设备发送控制命令
-function sentCommand(id,command) {
+function sentCommand(id,command,dhtData) {
 	let equipments = findEquipmentById(id)
 	if(equipments.length === 0){
 		return;
 	}
-	if(command === 'open'){
+	if(command === 'set'){
+		console.log('1111111111111111111111')
+		equipments.forEach((socket)=>{
+			data ={id:id,data:dhtData};
+			const json = JSON.stringify(data);
+			socket.write(json)
+		})
+
+	}else if(command === 'open'){
 		equipments.forEach((socket)=>{
 			socket.write("1", 'ascii')
 		})

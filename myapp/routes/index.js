@@ -21,7 +21,7 @@ router.get('/',function(req, res, next) {
               if (err) {
                   throw err;
               } else if (data.length > 0) {
-                console.log(data);
+                // console.log(data);
                 const equipmentId = data[0].id;
                 
                 res.redirect(`/index/equipmentId/${equipmentId}`);
@@ -55,7 +55,7 @@ router.get('/equipmentId/:id', function(req, res, next) {
             if (err) {
                 throw err;
             }else{
-              console.log(data);
+              // console.log(data);
               res.render('index',{user: req.session.user,dht: data});
             }
         });
@@ -67,7 +67,7 @@ router.get('/equipmentId/:id', function(req, res, next) {
 
 router.get('/logoff', function(req, res, next) {
   //销毁session
-  console.log(req.session);
+  // console.log(req.session);
   delete req.session.user;
   
   res.redirect('/login'); 
@@ -135,6 +135,13 @@ router.get('/history/:id', function(req, res, next) {
 //     alert('账号或密码不正确！');
 //   }
 // })
+
+// 向某设备发送 开/关 LED命令
+router.post('/dht/:id',function (req,res,next) {
+  console.log('post /dht/:id - ',req.params.id,req.body);
+  tcpServer.sentCommand(req.params.id,'set',req.body)
+  res.send('设置已保存')
+})
 
 // 向某设备发送 开/关 LED命令
 router.post('/led/:id',function (req,res,next) {

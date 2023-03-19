@@ -30,9 +30,9 @@ connPool.getConnection(function (err, client) {
 mysql.insert = function (sql,data, callback) {
   if (mysql.dbClient) {
 
-    var addSqlParams = data;
+    var SqlParams = data;
 
-    mysql.dbClient.query(sql, addSqlParams, function (err, result) {
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
       // 如果在执行上述查询时出现任何错误，则抛出错误
       if (err) {
         callback(err)
@@ -50,9 +50,9 @@ mysql.insert = function (sql,data, callback) {
 mysql.update = function (sql,data, callback) {
   if (mysql.dbClient) {
 
-    var addSqlParams = data;
+    var SqlParams = data;
 
-    mysql.dbClient.query(sql, addSqlParams, function (err, result) {
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
       // 如果在执行上述查询时出现任何错误，则抛出错误
       if (err) {
         callback(err)
@@ -68,17 +68,17 @@ mysql.update = function (sql,data, callback) {
 
 
 // 查找数据
-mysql.find = function (data, callback) {
+mysql.find = function (sql,data, callback) {
   if (mysql.dbClient) {
 
-    var sql = 'select * from dev order by sn desc limit 10;';
-    var sqlParams = data;
+    // var sql = 'select * from dev order by sn desc limit 10;';
+    var SqlParams = data;
 
-    connection.query(sql, function (err, result) {
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
       if (err) {
         callback(err)
       }
-      callback(null, result);
+      callback(null,result);
     });
   }
   else {

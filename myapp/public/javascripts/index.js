@@ -43,12 +43,27 @@ function postData(equipmentId,actionString){
   if(!equipmentId){
     return console.log('没设备，不可发送指令')
   }
-  var httpRequest = null;
-  if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
-    httpRequest = new XMLHttpRequest();
-  } else if (window.ActiveXObject) { // IE 6 and older
-      httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-  }
+  // var httpRequest = null;
+  // if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
+  //   httpRequest = new XMLHttpRequest();
+  // } else if (window.ActiveXObject) { // IE 6 and older
+  //     httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+  // }
+
+  $.ajax({
+    type: "POST",
+    url: "/products/del-product",
+    data: {id},
+    success: function (result) {
+      alert(result);
+      window.location.href = "/products";
+    },
+    error: function (error) {
+      console.log("error");
+      alert("错误：数据传输失败！");
+    }
+  });
+
   var params = 'action='+actionString
   httpRequest.open('POST', '/led/'+equipmentId);
   httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
