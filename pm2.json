@@ -1,0 +1,5 @@
+{
+    "apps":[
+      {"name":"SmartHome","script":"./myapp/bin/www"}
+    ]
+  }
