@@ -26,13 +26,13 @@ router.get('/',function(req, res, next) {
                 
                 res.redirect(`/index/equipmentId/${equipmentId}`);
               }else{
-                res.render('index',{user:req.session.user});
+                res.render('index',{user:req.session.user,dht: null,light: null});
               }
           });
     });
   }else{
     // console.log(user);
-    res.render('index',{user:null,dht: null});
+    res.render('index',{user:null,dht: null,light: null});
   }
   
 });
@@ -49,14 +49,15 @@ router.get('/equipmentId/:id', function(req, res, next) {
   mysql.connPool.getConnection(function (err, connection) {
     //查询用户温湿度
     connection.query(
-        'SELECT tem,hum FROM dht11_data WHERE devId = ? ORDER BY id DESC LIMIT 1;'
+        'SELECT tem,hum FROM dht11_data WHERE devId = ? ORDER BY id DESC LIMIT 1;'+
+        'SELECT light.id,light.name,light.state FROM `user`,light WHERE `user`.userName = ? AND `user`.uid = light.uid;'
 
-        , [id], function (err, data) {
+        , [id,userName], function (err, data) {
             if (err) {
                 throw err;
             }else{
-              // console.log(data);
-              res.render('index',{user: req.session.user,dht: data});
+              console.log(data);
+              res.render('index',{user: req.session.user,dht: data[0],light: data[1]});
             }
         });
   });
@@ -136,7 +137,7 @@ router.get('/history/:id', function(req, res, next) {
 //   }
 // })
 
-// 向某设备发送 开/关 LED命令
+// 向某设备发送温度设定
 router.post('/dht/:id',function (req,res,next) {
   console.log('post /dht/:id - ',req.params.id,req.body);
   tcpServer.sentCommand(req.params.id,'set',req.body)
@@ -144,9 +145,9 @@ router.post('/dht/:id',function (req,res,next) {
 })
 
 // 向某设备发送 开/关 LED命令
-router.post('/led/:id',function (req,res,next) {
-  console.log('post /led/:id - ',req.params.id,req.body);
-  tcpServer.sentCommand(req.params.id,req.body.action)
+router.post('/light/:id',function (req,res,next) {
+  console.log('post /light - ',req.params.id,req.body);
+  tcpServer.sentCommand(req.params.id,'light',req.body.lightId)
   res.send({code:0,msg:'命令已发送'})
 })
 

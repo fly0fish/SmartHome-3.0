@@ -46,6 +46,26 @@ mysql.insert = function (sql,data, callback) {
   }
 }
 
+//删除数据
+mysql.delete = function (sql,data, callback) {
+  if (mysql.dbClient) {
+
+    var SqlParams = data;
+
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
+      // 如果在执行上述查询时出现任何错误，则抛出错误
+      if (err) {
+        callback(err)
+      }
+      // 如果没有错误，得到结果
+      callback(null, result);
+    });
+  }
+  else {
+    callback('mysql is not connected!')
+  }
+}
+
 //修改数据
 mysql.update = function (sql,data, callback) {
   if (mysql.dbClient) {

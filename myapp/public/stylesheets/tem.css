@@ -90,6 +90,13 @@
     margin-bottom: 30px;
 }
 
+.tm-block-title-light {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0px;
+}
+
 .light-title{
     font-size: 1.5rem;
     font-weight: 700;

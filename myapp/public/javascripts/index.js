@@ -52,11 +52,10 @@ function postData(equipmentId,actionString){
 
   $.ajax({
     type: "POST",
-    url: "/products/del-product",
-    data: {id},
+    url: "/index/light/" + equipmentId,
+    data: {lightId: actionString},
     success: function (result) {
-      alert(result);
-      window.location.href = "/products";
+      console.log('success');
     },
     error: function (error) {
       console.log("error");
@@ -64,10 +63,15 @@ function postData(equipmentId,actionString){
     }
   });
 
-  var params = 'action='+actionString
-  httpRequest.open('POST', '/led/'+equipmentId);
-  httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  httpRequest.send(params);
+  // var params = 'action='+actionString
+  // httpRequest.open('POST', '/led/'+equipmentId);
+  // httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  // httpRequest.send(params);
+}
+
+function lightClick(input) {
+  var id = input.getAttribute("id");
+  postData(equipmentId,id)
 }
 
 

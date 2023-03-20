@@ -47,16 +47,55 @@ const server = net.createServer((socket)=>{
 	}else{
 		const json = JSON.parse(data)
 
-		// 将接收到的数据作为最新的数据
-		// let str = addr+" --> " + "tem:" + json.tem + "  " + "hum:" + json.hum
-		socket.lastValue = json
-		// console.log(str)
+		if(json.id === 1){
+			device.lightConn(json.light1,function(err,result){
+				if(err){
+					console.log('查询light1失败')
+				}else if(result.length > 0){
+					socket.light1 = json.light1
+					console.log('存储101成功')
+				}
+			});
+		
+			device.lightConn(json.light2,function(err,result){
+				if(err){
+					console.log('查询light2失败')
+				}else if(result.length > 0){
+					socket.light2 = json.light2
+					console.log('存储102成功')
+				}
+			});
+		
+			device.lightConn(json.light3,function(err,result){
+				if(err){
+					console.log('查询light3失败')
+				}else if(result.length > 0){
+					socket.light3 = json.light3
+				}
+			});
+		
+			device.lightConn(json.light4,function(err,result){
+				if(err){
+					console.log('查询light4失败')
+				}else if(result.length > 0){
+					socket.light4 = json.light4
+				}
+			});
 
-		//存储温湿度数据
-		device.dhtData(socket.id,json.tem,json.hum)
 
-		//发送websocket消息 
-		websocket.sendData(socket.id,socket.lastValue)
+		}else{
+
+			// 将接收到的数据作为最新的数据
+			// let str = addr+" --> " + "tem:" + json.tem + "  " + "hum:" + json.hum
+			socket.lastValue = json
+			// console.log(str)
+
+			//存储温湿度数据
+			device.dhtData(socket.id,json.tem,json.hum)
+
+			//发送websocket消息 
+			websocket.sendData(socket.id,socket.lastValue)
+		}
 	}
 	
 
@@ -104,6 +143,7 @@ const server = net.createServer((socket)=>{
 	socket.on('timeout', () => {
 		console.log(socket.id,socket.addr,'socket timeout');
 		deleteEquipment(socket.id,socket.addr)
+		device.dhtClose(socket.id)
 		socket.end();
 	});
 
@@ -181,7 +221,7 @@ function findEquipmentById(id) {
 }
 
 // 给设备发送控制命令
-function sentCommand(id,command,dhtData) {
+function sentCommand(id,command,devData) {
 	let equipments = findEquipmentById(id)
 	if(equipments.length === 0){
 		return;
@@ -189,14 +229,16 @@ function sentCommand(id,command,dhtData) {
 	if(command === 'set'){
 		console.log('1111111111111111111111')
 		equipments.forEach((socket)=>{
-			data ={id:id,data:dhtData};
+			data ={id:id,data:devData};
 			const json = JSON.stringify(data);
 			socket.write(json)
 		})
 
-	}else if(command === 'open'){
+	}else if(command === 'light'){
 		equipments.forEach((socket)=>{
-			socket.write("1", 'ascii')
+			data ={id:id,data:devData};
+			const json = JSON.stringify(data);
+			socket.write(json)
 		})
 	}
 	else if(command === 'close'){
@@ -212,5 +254,5 @@ module.exports={
 	addEquipment:addEquipment,
 	deleteEquipment:deleteEquipment,
 	findEquipment:findEquipment,
-	sentCommand:sentCommand
+	sentCommand:sentCommand,
 }

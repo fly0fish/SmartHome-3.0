@@ -13,6 +13,20 @@ function init() {
     console.log('tcp-client Connected.');
     // 先发送设备id
     client.write('211')
+
+    const dev = {
+      id: 1,
+      light1: 101,
+      light2: 102,
+      light3: 103,
+      light4: 104
+    };
+
+    setTimeout(() => {
+      const json = JSON.stringify(dev);
+      client.write(json);
+    }, 500);
+
     //定时发送随机数
     let interval = setInterval(()=>{
       if(!client.destroyed){

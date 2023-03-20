@@ -332,6 +332,7 @@
                     />
                   </div>
                 </div>
+                <% if(dht){ %>
                 <div>
                   <button
                     type="button"
@@ -342,6 +343,7 @@
                     保存设置
                   </button>
                 </div>
+                <% } %>
               </div>
             </div>
           </div>
@@ -449,16 +451,43 @@
             <div
               class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow"
             >
-              <h2 class="tm-block-title-tem">灯光控制</h2>
-              <div class="tm-block-div-l">
+              <h2 class="tm-block-title-light">灯光控制</h2>
+              <% if(light){ %> <% light.forEach(items=> { %>
+              <div class="tm-block-div tm-block-div-l">
                 <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
-                <span class="tm-block-text">客厅灯</span>
-                <input type="checkbox" name="" id="custom1" />
-                <label for="custom1" class="check-box">
+                <span class="tm-block-text"><%= items.name %></span>
+                <% if(items.state){ %>
+                <input type="checkbox" name="light" id="<%= items.id %>" onclick="lightClick(this)" />
+                <label for="<%= items.id %>" class="check-box">
                   <span class="check-handler"></span>
                 </label>
+                <% }else{ %>
+                  <span class="tm-block-text-right">未连接</span>
+                  <% } %>
               </div>
-              <div class="tm-block-div-l">
+              <% }); %> <% }else{ %>
+                <div class="tm-block-div tm-block-div-l">
+                  <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">灯1</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <div class="tm-block-div tm-block-div-l">
+                  <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">灯2</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <div class="tm-block-div tm-block-div-l">
+                  <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">灯3</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <div class="tm-block-div tm-block-div-l">
+                  <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">灯4</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+              <% } %>
+              <!-- <div class="tm-block-div tm-block-div-l">
                 <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
                 <span class="tm-block-text">卧室灯</span>
                 <input type="checkbox" name="" id="custom2" />
@@ -481,7 +510,7 @@
                 <label for="custom4" class="check-box">
                   <span class="check-handler"></span>
                 </label>
-              </div>
+              </div> -->
               <h2 class="light-title">模式选择</h2>
             </div>
           </div>
@@ -520,30 +549,30 @@
     <script src="/javascripts/owl.carousel.js"></script>
 
     <script>
-      Chart.defaults.global.defaultFontColor = "white";
-      let ctxLine,
-        ctxBar,
-        ctxPie,
-        optionsLine,
-        optionsBar,
-        optionsPie,
-        configLine,
-        configBar,
-        configPie,
-        lineChart,
-        barChart,
-        pieChart;
-      // DOM is ready
-      $(function () {
-        drawLineChart(); // Line Chart
-        //drawBarChart(); // Bar Chart
-        //drawPieChart(); // Pie Chart
+      // Chart.defaults.global.defaultFontColor = "white";
+      // let ctxLine,
+      //   ctxBar,
+      //   ctxPie,
+      //   optionsLine,
+      //   optionsBar,
+      //   optionsPie,
+      //   configLine,
+      //   configBar,
+      //   configPie,
+      //   lineChart,
+      //   barChart,
+      //   pieChart;
+      // // DOM is ready
+      // $(function () {
+      //   drawLineChart(); // Line Chart
+      //   //drawBarChart(); // Bar Chart
+      //   //drawPieChart(); // Pie Chart
 
-        $(window).resize(function () {
-          updateLineChart();
-          //updateBarChart();
-        });
-      });
+      //   $(window).resize(function () {
+      //     updateLineChart();
+      //     //updateBarChart();
+      //   });
+      // });
 
       //天气
       $(document).ready(function () {
