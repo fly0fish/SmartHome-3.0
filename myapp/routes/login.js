@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var mysql = require('../bin/mysql.js')
+var mysqlDb = require('../bin/mysql.js')
 
 router.get('/', function (req, res, next) {
 
@@ -24,9 +24,7 @@ router.post('/', function login(req, res) {
     var userName = val.userName;
     var userPwd = val.userPwd;
 
-    mysql.connPool.getConnection(function (err, connection) {
-
-        connection.query('select * from user where userName = ? and userPwd = ?', [userName, userPwd], function (err, data) {
+        mysqlDb.mysql.dbClient.query('select * from user where userName = ? and userPwd = ?', [userName, userPwd], function (err, data) {
             if (err) {
                 throw err;
             } else if (data.length > 0) {
@@ -43,8 +41,6 @@ router.post('/', function login(req, res) {
                 // res.end('用户名或密码有误!');
             }
         })
-        connection.release();
-    });
 
 });
 
@@ -54,9 +50,7 @@ router.post('/register', function login(req, res) {
     var userName = val.userName;
     var userPwd = val.userPwd;
 
-    mysql.connPool.getConnection(function (err, connection) {
-
-        connection.query('select * from user where userName = ?', [userName], function (err, data) {
+    mysqlDb.mysql.dbClient.query('select * from user where userName = ?', [userName], function (err, data) {
             if (err) {
                 throw err;
             } else if (data.length > 0) {
@@ -65,7 +59,7 @@ router.post('/register', function login(req, res) {
 
             } else {
                 //添加新用户
-                connection.query(
+                mysqlDb.mysql.dbClient.query(
                     'INSERT INTO user(uid,userName,userPwd) VALUES(0,?,?);'+
                     'INSERT INTO category(id,userName) VALUES(0,?);'+
                     'INSERT INTO user_data(userName) VALUES(?);'
@@ -82,9 +76,6 @@ router.post('/register', function login(req, res) {
                 })
             }
         })
-        connection.release();
-    });
-
 });
 
 module.exports = router;

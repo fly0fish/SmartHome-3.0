@@ -221,23 +221,23 @@ function findEquipmentById(id) {
 }
 
 // 给设备发送控制命令
-function sentCommand(id,command,devData) {
+function sentCommand(id,command,devData,userName) {
 	let equipments = findEquipmentById(id)
 	if(equipments.length === 0){
 		return;
 	}
 	if(command === 'set'){
-		console.log('1111111111111111111111')
 		equipments.forEach((socket)=>{
+			var date = new Date();
 			data ={id:id,data:devData};
 			const json = JSON.stringify(data);
-			socket.write(json)
+			socket.write(json);
+			mysqlDb.mysql.insertLog([userName,'发送设置成功',date]);
 		})
 
 	}else if(command === 'light'){
 		equipments.forEach((socket)=>{
-			data ={id:id,data:devData};
-			const json = JSON.stringify(data);
+			const json = JSON.stringify(devData);
 			socket.write(json)
 		})
 	}

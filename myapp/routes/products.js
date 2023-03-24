@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('../bin/mysql.js');
+var mysqlDb = require('../bin/mysql.js');
 var moment = require('moment');
 var fs = require('fs');
 var multiparty = require('multiparty');//引入multiparty模块用于上传图片
@@ -13,9 +13,8 @@ router.get('/', function (req, res, next) {
     var userName = req.session.user?.userName;
     if (userName) {
 
-        mysql.connPool.getConnection(function (err, connection) {
             //查询用户所有设备
-            connection.query(
+            mysqlDb.mysql.dbClient.query(
                 'SELECT light.`name`,light.id,light.state,light.date FROM `user`,light WHERE `user`.userName = ? AND `user`.uid = light.uid UNION ' +
                 'SELECT dht11.`name`,dht11.id,dht11.state,dht11.date FROM `user`,dht11 WHERE `user`.userName = ? AND `user`.uid = dht11.uid'
 
@@ -29,7 +28,7 @@ router.get('/', function (req, res, next) {
                             data[p].date = moment(data[p].date).format('YYYY-MM-DD');
                         }
                         //查询用户所有设备种类
-                        connection.query('SELECT light,dht11 FROM category WHERE userName = ?', [userName], function (err, result) {
+                        mysqlDb.mysql.dbClient.query('SELECT light,dht11 FROM category WHERE userName = ?', [userName], function (err, result) {
                             if (err) {
                                 throw err;
                             } else if (result.length > 0) {
@@ -42,9 +41,7 @@ router.get('/', function (req, res, next) {
                         res.render('products', { user: req.session.user, light: null, category: null });
                     }
                 });
-            connection.release();
 
-        });
     } else {
         res.render('products', { user: req.session.user, light: null, category: null });
     }
@@ -103,10 +100,8 @@ router.post('/add-product', function (req, res, next) {
         devSql = 'INSERT INTO dev VALUE (?,?,?)';
         user_devSql = 'INSERT INTO user_dev_id VALUE (?,?)';
 
-        mysql.connPool.getConnection(function (err, connection) {
-
             //查询用户id
-            connection.query(
+            mysqlDb.mysql.dbClient.query(
                 'SELECT user.uid FROM user WHERE userName = ? '
 
                 , [userName], uid = function (err, userId) {
@@ -116,7 +111,7 @@ router.post('/add-product', function (req, res, next) {
                         let uid = userId[0].uid;
 
                         //查询设备号是否存在
-                        connection.query(selectSql, [id], function (err, result) {
+                        mysqlDb.mysql.dbClient.query(selectSql, [id], function (err, result) {
                             if (err) {
                                 throw err;
                             } else if (result.length > 0) {
@@ -125,23 +120,23 @@ router.post('/add-product', function (req, res, next) {
                                 res.write('<script>location.href="/products"</script>');
                             } else {
                                 //增加设备数量
-                                connection.query(cateSql, [userName], function (err, data) {
+                                mysqlDb.mysql.dbClient.query(cateSql, [userName], function (err, data) {
                                     if (err) {
                                         throw err;
                                     }
                                 });
-                                connection.query(devSql, [id, uid, category], function (err, data) {
+                                mysqlDb.mysql.dbClient.query(devSql, [id, uid, category], function (err, data) {
                                     if (err) {
                                         throw err;
                                     }
                                 });
-                                connection.query(user_devSql, [uid, id], function (err, data) {
+                                mysqlDb.mysql.dbClient.query(user_devSql, [uid, id], function (err, data) {
                                     if (err) {
                                         throw err;
                                     }
                                 });
                                 //插入设备数据
-                                connection.query(insertSql, [id, uid, name, date, pic], function (err, data) {
+                                mysqlDb.mysql.dbClient.query(insertSql, [id, uid, name, date, pic], function (err, data) {
                                     if (err) {
                                         throw err;
                                     } else {
@@ -154,11 +149,6 @@ router.post('/add-product', function (req, res, next) {
                         });
                     }
                 });
-
-
-            connection.release();
-        })
-
     });
 });
 
@@ -172,9 +162,7 @@ router.post('/del-product', function (req, res, next) {
     var selectSql = 'SELECT category FROM dev WHERE id = ? ';
     var cateSql = null;
 
-    mysql.connPool.getConnection(function (err, connection) {
-
-        connection.query(selectSql, [id], function (err, data) {
+    mysqlDb.mysql.dbClient.query(selectSql, [id], function (err, data) {
             if (err) {
                 throw err;
             } else {
@@ -188,12 +176,12 @@ router.post('/del-product', function (req, res, next) {
                     default: break;
                 }
 
-                connection.query(cateSql, [userName], function (err, data) {
+                mysqlDb.mysql.dbClient.query(cateSql, [userName], function (err, data) {
                     if (err) {
                         throw err;
                     }
                 });
-                connection.query('DELETE FROM dev WHERE id = ? ', [id], function (err, result) {
+                mysqlDb.mysql.dbClient.query('DELETE FROM dev WHERE id = ? ', [id], function (err, result) {
                     if (err) {
                         throw err;
                     } else{
@@ -202,8 +190,6 @@ router.post('/del-product', function (req, res, next) {
                 });
             }
         });
-        connection.release();
-    });
 });
 
 

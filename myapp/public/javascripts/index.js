@@ -43,17 +43,11 @@ function postData(equipmentId,actionString){
   if(!equipmentId){
     return console.log('没设备，不可发送指令')
   }
-  // var httpRequest = null;
-  // if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
-  //   httpRequest = new XMLHttpRequest();
-  // } else if (window.ActiveXObject) { // IE 6 and older
-  //     httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-  // }
 
   $.ajax({
     type: "POST",
     url: "/index/light/" + equipmentId,
-    data: {lightId: actionString},
+    data: actionString,
     success: function (result) {
       console.log('success');
     },
@@ -62,27 +56,19 @@ function postData(equipmentId,actionString){
       alert("错误：数据传输失败！");
     }
   });
-
-  // var params = 'action='+actionString
-  // httpRequest.open('POST', '/led/'+equipmentId);
-  // httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  // httpRequest.send(params);
 }
 
 function lightClick(input) {
   var id = input.getAttribute("id");
-  postData(equipmentId,id)
+  var checked = input.checked;
+  console.log(checked);
+  if(checked){
+    postData(equipmentId,{id:id,comm:'open'});
+  }else{
+    postData(equipmentId,{id:id,comm:'close'});
+  }
+  
 }
-
-
-//给开关灯按钮添加事件，发起请求 POST /led/:id
-// document.getElementById('open-led').onclick = ()=>{
-//   postData(equipmentId,'open')
-// }
-
-// document.getElementById('close-led').onclick = ()=>{
-//   postData(equipmentId,'close')
-// }
 
 
 // 基于准备好的dom，初始化echarts实例

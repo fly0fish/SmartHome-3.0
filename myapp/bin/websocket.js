@@ -24,6 +24,9 @@ function addWebsocket(equipmentId,ws) {
 
 
 function sendData(equipmentId,data) {//
+if(equipmentId === 'report')
+        console.log('111111111111111111111111')
+
   let msg
   // 捕捉 JSON序列化时的异常
   try{
@@ -62,6 +65,7 @@ function init(server) {
         if(data.equipmentId){
           addWebsocket(data.equipmentId,ws)
         }else if(data.report){
+          addWebsocket(data.report,ws)
           console.log(data.report)
         }
 
