@@ -87,7 +87,11 @@ const server = net.createServer((socket)=>{
 					socket.mq2 = json.mq2
 				}
 			});
-		}else{
+		}else if(json.id === 200){
+			device.devUp(json.devId,json.status);
+
+
+		}else if(json.id === 300){
 
 			// 将接收到的数据作为最新的数据
 			// let str = addr+" --> " + "tem:" + json.tem + "  " + "hum:" + json.hum

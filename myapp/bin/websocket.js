@@ -23,9 +23,7 @@ function addWebsocket(equipmentId,ws) {
 }
 
 
-function sendData(equipmentId,data) {//
-if(equipmentId === 'report')
-        console.log('111111111111111111111111')
+function sendData(equipmentId,data) {
 
   let msg
   // 捕捉 JSON序列化时的异常
