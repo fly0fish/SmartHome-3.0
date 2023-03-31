@@ -140,6 +140,17 @@ function air(userName, acmode){
 		})
 }
 
+//更新加湿器模式
+function hum(userName, hummode){
+    var upSql = 'update acandhum set hummode = ? where userName = ?';
+		mysqlDb.mysql.update(upSql,[hummode,userName],function (err) {
+			if(err){
+				// 保存数据失败只会影响历史数据的呈现。
+				console.log(id,"连接设备失败：",err)
+			}
+		})
+}
+
 module.exports = {
 	dhtUser:dhtUser,
     dhtConn:dhtConn,
@@ -150,6 +161,7 @@ module.exports = {
 	mq2Conn:mq2Conn,
 	devUp:devUp,
 	dhtUserName:dhtUserName,
-	air:air
+	air:air,
+	hum:hum
 
   }
