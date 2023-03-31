@@ -15,11 +15,12 @@ function init() {
     client.write('211')
 
     const dev = {
-      id: 1,
+      id: 100,
       light1: 101,
       light2: 102,
       light3: 103,
-      light4: 104
+      light4: 104,
+      mq2: 301
     };
 
     setTimeout(() => {

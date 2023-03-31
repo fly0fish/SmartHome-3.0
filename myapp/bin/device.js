@@ -72,6 +72,29 @@ function dhtData(id,tem,hum){
 		})
 }
 
+//mq2连接
+function mq2Conn(id,callback){
+	var seSql = 'SELECT uid FROM mq2 WHERE id = ? ';
+		mysqlDb.mysql.find(seSql,[id],function (err,result) {
+			if(err){
+				// 保存数据失败只会影响历史数据的呈现。
+				console.log(id,"连接设备失败：",err)
+			}else if(result.length > 0){
+
+				var upSql = 'update mq2 set state = "1" where id = ?';
+					mysqlDb.mysql.update(upSql,[id],function (err) {
+						if(err){
+							// 保存数据失败只会影响历史数据的呈现。
+							console.log(id,"连接设备失败：",err)
+						}
+					})
+			}
+			callback(null,result);
+		})
+}
+
+
+
 module.exports = {
 	dhtUser:dhtUser,
     dhtConn:dhtConn,
@@ -79,5 +102,6 @@ module.exports = {
 	lightConn:lightConn,
 	dhtClose:dhtClose,
     dhtData:dhtData,
+	mq2Conn:mq2Conn,
 
   }

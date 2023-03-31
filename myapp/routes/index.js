@@ -25,12 +25,12 @@ router.get('/', function (req, res, next) {
 
           res.redirect(`/index/equipmentId/${equipmentId}`);
         } else {
-          res.render('index', { user: req.session.user, dht: null, light: null });
+          res.render('index', { user: req.session.user, dht: null, light: null, mq2: null });
         }
       });
   } else {
     // console.log(user);
-    res.render('index', { user: null, dht: null, light: null });
+    res.render('index', { user: null, dht: null, light: null, mq2: null });
   }
 
 });
@@ -44,17 +44,18 @@ router.get('/equipmentId/:id', function (req, res, next) {
   var id = req.params.id;//获取路由中的设备id
 
   if (userName) {
-    //查询用户温湿度
+    //查询用户温湿度,灯光数据
     mysqlDb.mysql.dbClient.query(
-      'SELECT tem,hum FROM dht11_data WHERE devId = ? ORDER BY id DESC LIMIT 1;' +
-      'SELECT light.id,light.name,light.state FROM `user`,light WHERE `user`.userName = ? AND `user`.uid = light.uid;'
+      'SELECT tem,hum                                        FROM dht11_data     WHERE devId = ? ORDER BY id DESC LIMIT 1;' +
+      'SELECT light.id,light.name,light.state                FROM `user`,light   WHERE `user`.userName = ? AND `user`.uid = light.uid;' +
+      'SELECT mq2.id,mq2.name,mq2.state,mq2.status           FROM `user`,mq2     WHERE `user`.userName = ? AND `user`.uid = mq2.uid;'
 
-      , [id, userName], function (err, data) {
+      , [id, userName,userName], function (err, data) {
         if (err) {
           throw err;
         } else {
           console.log(data);
-          res.render('index', { user: req.session.user, dht: data[0], light: data[1] });
+          res.render('index', { user: req.session.user, dht: data[0], light: data[1], mq2: data[2] });
         }
       });
   } else {
@@ -121,7 +122,7 @@ router.get('/history/:id', function (req, res, next) {
 router.post('/dht/:id', function (req, res, next) {
   var userName = req.session.user?.userName;
   if(userName){
-    console.log('post /dht/:id - ', req.params.id, req.body);
+    console.log('post /dht/:id - ', req.params.id, req.body)
     tcpServer.sentCommand(req.params.id, 'set', req.body,userName)
     res.send('设置已保存')
   }else{
@@ -132,7 +133,7 @@ router.post('/dht/:id', function (req, res, next) {
 
 // 向某设备发送 开/关 LED命令
 router.post('/light/:id', function (req, res, next) {
-  console.log('post /light - ', req.params.id, req.body);
+  console.log('post /light - ', req.params.id, req.body)
   tcpServer.sentCommand(req.params.id, 'light', req.body)
   res.send({ code: 0, msg: '命令已发送' })
 })

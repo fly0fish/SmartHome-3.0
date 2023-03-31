@@ -56,11 +56,15 @@
               <i class="far fa-user"></i> 账户
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-cog"></i>
-              设置
+              <span> 设置 <i class="fas fa-angle-down"></i> </span>
             </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">联系我们</a>
+            </div>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -186,6 +190,18 @@
                         <%= items.dht11 %>
                       </td>
                     </tr>
+                    <tr>
+                      <td class="tm-product-name">警报设备</td>
+                      <td class="text-center">
+                        <%= items.alarm %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="tm-product-name">开关设备</td>
+                      <td class="text-center">
+                        <%= items.switch %>
+                      </td>
+                    </tr>
                     <% }); %>
                       <% }else{ %>
                         <tr>
@@ -217,7 +233,7 @@
   <footer class="tm-footer row tm-mt-small">
     <div class="col-12 font-weight-light">
       <p class="text-center text-white mb-0 px-4 small">
-        Copyright &copy; <b>2018</b> All rights reserved.
+        Copyright &copy; <b>2023</b> All rights reserved.
 
         Design: <a rel="nofollow noopener" class="tm-footer-link">FlyFish</a>
       </p>

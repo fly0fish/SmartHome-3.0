@@ -79,11 +79,15 @@
                   账户
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-cog"></i>
-                  设置
+                  <span> 设置 <i class="fas fa-angle-down"></i> </span>
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">联系我们</a>
+                </div>
               </li>
             </ul>
             <ul class="navbar-nav">
@@ -403,11 +407,28 @@
                 <span class="tm-block-text">洗浴水温</span>
                 <span class="tm-block-text-right">未连接</span>
               </div>
+              <% if(mq2){ %> <% mq2.forEach(items=> { %>
               <div class="tm-block-div">
                 <i class="fas fa-fire fa-lg" style="color: white"></i>
-                <span class="tm-block-text">火灾预警</span>
-                <span class="tm-block-text-right">正常</span>
+                <span class="tm-block-text"><%= items.name %></span>
+                <% if(items.state){ %>
+                  <% if(items.status === 'off'){ %>  
+                    <span class="tm-block-text-right">正常</span>
+                  <% }else{ %>
+                    <span class="tm-block-text-right">警报</span>
+                  <% } %>
+                <% }else{ %>
+                  <span class="tm-block-text-right">未连接</span>
+                <% } %>
               </div>
+              <% }); %>
+                <% }else{ %>
+                  <div class="tm-block-div">
+                    <i class="fas fa-fire fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">火灾预警</span>
+                    <span class="tm-block-text-right">未连接</span>
+                  </div>
+                <% } %>
             </div>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3 tm-block-col">
@@ -452,7 +473,8 @@
               class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow"
             >
               <h2 class="tm-block-title-light">灯光控制</h2>
-              <% if(light){ %> <% light.forEach(items=> { %>
+              <% if(light){ %> 
+                <% light.forEach(items=> { %>
               <div class="tm-block-div tm-block-div-l">
                 <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
                 <span class="tm-block-text"><%= items.name %></span>
@@ -489,14 +511,14 @@
               <% } %>
               <h2 class="light-title">控制模式</h2>
               <div class="tm-block-div tm-block-div-l">
-                <span class="tm-block-text">手动控制</span>
+                <span class="tm-block-text">旅行模式</span>
                 <input type="checkbox" name="lightMode" id="mode"/>
                 <label for="mode" class="check-box">
                   <span class="check-handler"></span>
                 </label>
               </div>
               <div class="tm-block-div tm-block-div-l">
-                <span class="tm-block-text">自动控制</span>
+                <span class="tm-block-text">回家模式</span>
                 <input type="checkbox" name="lightMode" id="mode"/>
                 <label for="mode" class="check-box">
                   <span class="check-handler"></span>
@@ -523,7 +545,7 @@
       <footer class="tm-footer row tm-mt-small">
         <div class="col-12 font-weight-light">
           <p class="text-center text-white mb-0 px-4 small">
-            Copyright &copy; <b>2018</b> All rights reserved. Design:
+            Copyright &copy; <b>2023</b> All rights reserved. Design:
             <a rel="nofollow noopener" class="tm-footer-link">FlyFish</a>
           </p>
         </div>

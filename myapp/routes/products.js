@@ -15,10 +15,12 @@ router.get('/', function (req, res, next) {
 
             //查询用户所有设备
             mysqlDb.mysql.dbClient.query(
-                'SELECT light.`name`,light.id,light.state,light.date FROM `user`,light WHERE `user`.userName = ? AND `user`.uid = light.uid UNION ' +
-                'SELECT dht11.`name`,dht11.id,dht11.state,dht11.date FROM `user`,dht11 WHERE `user`.userName = ? AND `user`.uid = dht11.uid'
+                'SELECT light.`name`,light.id,light.state,light.date        FROM `user`,light   WHERE `user`.userName = ? AND `user`.uid = light.uid    UNION ' +
+                'SELECT dht11.`name`,dht11.id,dht11.state,dht11.date        FROM `user`,dht11   WHERE `user`.userName = ? AND `user`.uid = dht11.uid    UNION ' +
+                'SELECT switch.`name`,switch.id,switch.state,switch.date    FROM `user`,switch  WHERE `user`.userName = ? AND `user`.uid = switch.uid   UNION ' +
+                'SELECT mq2.`name`,mq2.id,mq2.state,mq2.date                FROM `user`,mq2     WHERE `user`.userName = ? AND `user`.uid = mq2.uid '
 
-                , [userName, userName], function (err, data) {
+                , [userName, userName,userName,userName], function (err, data) {
                     if (err) {
                         throw err;
                     } else if (data.length > 0) {
@@ -28,7 +30,7 @@ router.get('/', function (req, res, next) {
                             data[p].date = moment(data[p].date).format('YYYY-MM-DD');
                         }
                         //查询用户所有设备种类
-                        mysqlDb.mysql.dbClient.query('SELECT light,dht11 FROM category WHERE userName = ?', [userName], function (err, result) {
+                        mysqlDb.mysql.dbClient.query('SELECT light,dht11,alarm,switch FROM category WHERE userName = ?', [userName], function (err, result) {
                             if (err) {
                                 throw err;
                             } else if (result.length > 0) {
@@ -93,11 +95,19 @@ router.post('/add-product', function (req, res, next) {
                 insertSql = 'INSERT INTO dht11 VALUE (?,?,?,"off",0,?,?)';
                 cateSql = 'update category set dht11 = dht11+1 where userName = ?';
                 break;
+            case '3':
+                insertSql = 'INSERT INTO mq2 VALUE (?,?,?,"off",0,?,?)';
+                cateSql = 'update category set alarm = alarm+1 where userName = ?';
+                break;
+            case '4':
+                insertSql = 'INSERT INTO switch VALUE (?,?,?,"off",0,?,?)';
+                cateSql = 'update category set switch = switch+1 where userName = ?';
+                break;
             default: break;
         }
 
-        selectSql = 'SELECT id FROM dev WHERE id = ? ';
-        devSql = 'INSERT INTO dev VALUE (?,?,?)';
+        selectSql = 'SELECT id FROM device WHERE id = ? ';
+        devSql = 'INSERT INTO device VALUE (?,?,?)';
         user_devSql = 'INSERT INTO user_dev_id VALUE (?,?)';
 
             //查询用户id
@@ -125,11 +135,13 @@ router.post('/add-product', function (req, res, next) {
                                         throw err;
                                     }
                                 });
+                                //增加device表中设备
                                 mysqlDb.mysql.dbClient.query(devSql, [id, uid, category], function (err, data) {
                                     if (err) {
                                         throw err;
                                     }
                                 });
+                                //user_dev_id插入数据
                                 mysqlDb.mysql.dbClient.query(user_devSql, [uid, id], function (err, data) {
                                     if (err) {
                                         throw err;
@@ -159,7 +171,7 @@ router.post('/del-product', function (req, res, next) {
 
     var userName = req.session.user.userName;
 
-    var selectSql = 'SELECT category FROM dev WHERE id = ? ';
+    var selectSql = 'SELECT category FROM device WHERE id = ? ';
     var cateSql = null;
 
     mysqlDb.mysql.dbClient.query(selectSql, [id], function (err, data) {
@@ -173,6 +185,12 @@ router.post('/del-product', function (req, res, next) {
                     case '2':
                         cateSql = 'update category set dht11 = dht11-1 where userName = ?';
                         break;
+                    case '3':
+                        cateSql = 'update category set alarm = alarm-1 where userName = ?';
+                        break;
+                    case '4':
+                        cateSql = 'update category set switch = switch-1 where userName = ?';
+                        break;
                     default: break;
                 }
 
@@ -181,7 +199,7 @@ router.post('/del-product', function (req, res, next) {
                         throw err;
                     }
                 });
-                mysqlDb.mysql.dbClient.query('DELETE FROM dev WHERE id = ? ', [id], function (err, result) {
+                mysqlDb.mysql.dbClient.query('DELETE FROM device WHERE id = ? ', [id], function (err, result) {
                     if (err) {
                         throw err;
                     } else{

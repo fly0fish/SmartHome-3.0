@@ -47,13 +47,12 @@ const server = net.createServer((socket)=>{
 	}else{
 		const json = JSON.parse(data)
 
-		if(json.id === 1){
+		if(json.id === 100){
 			device.lightConn(json.light1,function(err,result){
 				if(err){
 					console.log('查询light1失败')
 				}else if(result.length > 0){
 					socket.light1 = json.light1
-					console.log('存储101成功')
 				}
 			});
 		
@@ -62,7 +61,6 @@ const server = net.createServer((socket)=>{
 					console.log('查询light2失败')
 				}else if(result.length > 0){
 					socket.light2 = json.light2
-					console.log('存储102成功')
 				}
 			});
 		
@@ -82,7 +80,13 @@ const server = net.createServer((socket)=>{
 				}
 			});
 
-
+			device.mq2Conn(json.mq2,function(err,result){
+				if(err){
+					console.log('查询mq2失败')
+				}else if(result.length > 0){
+					socket.mq2 = json.mq2
+				}
+			});
 		}else{
 
 			// 将接收到的数据作为最新的数据
@@ -228,10 +232,10 @@ function sentCommand(id,command,devData,userName) {
 	}
 	if(command === 'set'){
 		equipments.forEach((socket)=>{
-			var date = new Date();
 			data ={id:id,data:devData};
 			const json = JSON.stringify(data);
 			socket.write(json);
+			var date = new Date();
 			mysqlDb.mysql.insertLog([userName,'发送设置成功',date]);
 		})
 
@@ -241,7 +245,7 @@ function sentCommand(id,command,devData,userName) {
 			socket.write(json)
 		})
 	}
-	else if(command === 'close'){
+	else if(command === 'h20'){
 		equipments.forEach((socket)=>{
 			socket.write("0", 'ascii')
 		})
