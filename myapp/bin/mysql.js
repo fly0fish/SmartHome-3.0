@@ -17,7 +17,8 @@ let mysql = {
   find: null,
   delete: null,
   update: null,
-  insertLog: null
+  insertLog: null,
+  checkLight: null
 }
 
 connPool.getConnection(function (err, client) {
@@ -120,6 +121,45 @@ mysql.insertLog = function (data) {
       // 如果在执行上述查询时出现任何错误，则抛出错误
       if (err) {
         console.log(err);
+      }
+    });
+  }
+  else {
+    console.log('mysql is not connected!')
+  }
+}
+
+mysql.sysInsertLog = function (data) {
+  if (mysql.dbClient) {
+
+    var sql = 'INSERT INTO user_log(id,userName,log,date) VALUES(0,?,?,?);';
+    var SqlParams = data;
+
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
+      // 如果在执行上述查询时出现任何错误，则抛出错误
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+  else {
+    console.log('mysql is not connected!')
+  }
+}
+
+mysql.checkLight = function (userName,data,comm) {
+  if (mysql.dbClient) {
+
+    var sql = 'SELECT name FROM light WHERE id = ? ;';
+    var SqlParams = data;
+
+    mysql.dbClient.query(sql, SqlParams, function (err, result) {
+      // 如果在执行上述查询时出现任何错误，则抛出错误
+      if (err) {
+        console.log(err);
+      }else if(result.length > 0){
+        var date = new Date();
+			  mysql.insertLog([userName,result[0].name + comm,date]);
       }
     });
   }

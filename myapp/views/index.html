@@ -383,21 +383,44 @@
                   <span class="check-handler"></span>
                 </label>
               </div>
+              <% if(air){ %> <% air.forEach(items=> { %>
+                <div class="tm-block-div">
+                  <i class="fas fa-tachometer-alt fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">加湿器</span>
+                  <% if(items.hummode == 1){ %>
+                    <span class="tm-block-text-right">开启</span>
+                    <% }else{ %>
+                      <span class="tm-block-text-right">关闭</span>
+                      <% } %>
+                </div>
+                <div class="tm-block-div">
+                  <i class="fas fa-snowflake fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">空调</span>
+                  <% if(items.acmode == 1){ %>
+                    <span class="tm-block-text-right">制冷模式</span>
+                    <% }else if(items.acmode == 2){ %>
+                      <span class="tm-block-text-right">制热模式</span>
+                      <% }else{ %>
+                      <span class="tm-block-text-right">关闭</span>
+                      <% } %>
+                </div>
+              <% }); %>
+              <% }else{ %>
+              <div class="tm-block-div">
+                <i class="fas fa-tachometer-alt fa-lg" style="color: white"></i>
+                <span class="tm-block-text">加湿器</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
               <div class="tm-block-div">
                 <i class="fas fa-snowflake fa-lg" style="color: white"></i>
                 <span class="tm-block-text">空调</span>
-                <input type="checkbox" name="" id="custom9" />
-                <label for="custom9" class="check-box">
-                  <span class="check-handler"></span>
-                </label>
+                <span class="tm-block-text-right">未连接</span>
               </div>
+              <% } %>
               <div class="tm-block-div">
                 <i class="fas fa-bath fa-lg" style="color: white"></i>
                 <span class="tm-block-text">洗浴</span>
-                <input type="checkbox" name="" id="custom8" />
-                <label for="custom8" class="check-box">
-                  <span class="check-handler"></span>
-                </label>
+                <span class="tm-block-text-right">未连接</span>
               </div>
               <div class="tm-block-div">
                 <i
@@ -479,7 +502,8 @@
                 <i class="fas fa-lightbulb fa-lg" style="color: white"></i>
                 <span class="tm-block-text"><%= items.name %></span>
                 <% if(items.state){ %>
-                <input type="checkbox" name="light" id="<%= items.id %>" onclick="lightClick(this)" />
+                <input type="checkbox" name="light" id="<%= items.id %>" onclick="lightClick(this)" 
+                <% if(items.status === "on"){ %> checked= "checked" <% }else if(items.status === "off"){ %>  <% } %>/>
                 <label for="<%= items.id %>" class="check-box">
                   <span class="check-handler"></span>
                 </label>
@@ -512,25 +536,25 @@
               <h2 class="light-title">控制模式</h2>
               <div class="tm-block-div tm-block-div-l">
                 <span class="tm-block-text">旅行模式</span>
-                <input type="checkbox" name="lightMode" id="mode"/>
-                <label for="mode" class="check-box">
+                <input type="checkbox" name="lightMode" id="mode1"/>
+                <label for="mode1" class="check-box">
                   <span class="check-handler"></span>
                 </label>
               </div>
               <div class="tm-block-div tm-block-div-l">
                 <span class="tm-block-text">回家模式</span>
-                <input type="checkbox" name="lightMode" id="mode"/>
-                <label for="mode" class="check-box">
+                <input type="checkbox" name="lightMode" id="mode2"/>
+                <label for="mode2" class="check-box">
                   <span class="check-handler"></span>
                 </label>
               </div>
-              <div class="tm-block-div tm-block-div-l">
+              <!-- <div class="tm-block-div tm-block-div-l">
                 <span class="tm-block-text">氛围模式</span>
                 <input type="checkbox" name="lightMode" id="mode"/>
                 <label for="mode" class="check-box">
                   <span class="check-handler"></span>
                 </label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-12 tm-block-col">
@@ -657,7 +681,7 @@
         $.ajax({
           type: "POST",
           url: "/index/dht/" + equipmentId,
-          data: { tem: tempValue,hum: humidityValue },
+          data: {id: equipmentId, tem: tempValue, hum: humidityValue },
           success: function (result) {
             alert(result);
           },

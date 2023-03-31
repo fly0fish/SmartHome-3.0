@@ -34,6 +34,7 @@ function init() {
         // let value = (20+Math.random()*10).toFixed(2)
         // client.write(String(value))
         const data = {
+          id: 300,
           tem: (20+Math.random()*10).toFixed(2),
           hum: (50+Math.random()*10).toFixed(2)
         };

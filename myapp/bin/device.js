@@ -38,7 +38,7 @@ function lightConn(id,callback){
 				console.log(id,"连接设备失败：",err)
 			}else if(result.length > 0){
 
-				var upSql = 'update light set status = "on",state = "1" where id = ?';
+				var upSql = 'update light set status = "off",state = "1" where id = ?';
 					mysqlDb.mysql.update(upSql,[id],function (err) {
 						if(err){
 							// 保存数据失败只会影响历史数据的呈现。
@@ -115,6 +115,31 @@ function devUp(id,status){
 }
 
 
+//dht11查询用户名
+function dhtUserName(id,callback){
+	var seSql = 'SELECT user.userName FROM `user`,dht11 WHERE `user`.uid = dht11.uid AND dht11.id = ?;';
+		mysqlDb.mysql.find(seSql,[id],function (err,result) {
+			if(err){
+				// 保存数据失败只会影响历史数据的呈现。
+				console.log(id,"连接设备失败：",err)
+			}else if(result.length > 0){
+				callback(null,result[0].userName);
+			}
+		})
+}
+
+
+//更新空调模式
+function air(userName, acmode){
+    var upSql = 'update acandhum set acmode = ? where userName = ?';
+		mysqlDb.mysql.update(upSql,[acmode,userName],function (err) {
+			if(err){
+				// 保存数据失败只会影响历史数据的呈现。
+				console.log(id,"连接设备失败：",err)
+			}
+		})
+}
+
 module.exports = {
 	dhtUser:dhtUser,
     dhtConn:dhtConn,
@@ -123,6 +148,8 @@ module.exports = {
 	dhtClose:dhtClose,
     dhtData:dhtData,
 	mq2Conn:mq2Conn,
-	devUp:devUp
+	devUp:devUp,
+	dhtUserName:dhtUserName,
+	air:air
 
   }

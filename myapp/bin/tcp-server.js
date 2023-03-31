@@ -88,7 +88,7 @@ const server = net.createServer((socket)=>{
 				}
 			});
 		}else if(json.id === 200){
-			device.devUp(json.devId,json.status);
+			device.devUp(json.devId,json.status)
 
 
 		}else if(json.id === 300){
@@ -103,35 +103,26 @@ const server = net.createServer((socket)=>{
 
 			//发送websocket消息 
 			websocket.sendData(socket.id,socket.lastValue)
+		}else if(json.id === 400){
+
+			
+			mysqlDb.mysql.dhtUserName(socket.id,function(err,result){
+				if(err){
+					console.log('查询失败')
+				}else if(result.length > 0){
+					var userName = result
+					var date = new Date();
+					mysqlDb.mysql.insertLog([userName,json.log,date])
+					mysqlDb.mysql.air(userName,json.acmode)
+				}
+			});
+			
+
+		}else if(json.id === 500){
+
 		}
 	}
 	
-
-    // // 如果该socket没有id，就把当前数据赋值为id
-	// // 等效于接收的第一条数据作为其设备id
-    // if(!socket.id){
-	// 		socket.id = data.toString('ascii')
-	// 		socket.addr = addr
-	// 		addEquipment(socket)
-	// 	}
-	// 	else{
-	// 		//保存所接收到的数据
-	// 		// date=new Date()
-
-	// 		let dhtData = {
-	// 			tem: null,
-	// 			hum: null
-	// 		}
-
-	// 		mysqlDb.mysql.insert([socket.id,socket.lastValue],function (err) {
-	// 			if(err){
-	// 				// 保存数据失败只会影响历史数据的呈现。
-	// 				console.log(socket.id,"保存数据失败：",err)
-	// 			}
-	// 		})
-	// 		//发送websocket消息 
-	// 		websocket.sendData(socket.id,socket.lastValue)
-	// 	}
   })
 
   // close
@@ -236,17 +227,19 @@ function sentCommand(id,command,devData,userName) {
 	}
 	if(command === 'set'){
 		equipments.forEach((socket)=>{
-			data ={id:id,data:devData};
-			const json = JSON.stringify(data);
+			const json = JSON.stringify(devData);
 			socket.write(json);
 			var date = new Date();
-			mysqlDb.mysql.insertLog([userName,'发送设置成功',date]);
+			mysqlDb.mysql.insertLog([userName,'设置温湿度:tem:' + devData.tem + ' hum:' + devData.hum,date]);
 		})
 
 	}else if(command === 'light'){
 		equipments.forEach((socket)=>{
 			const json = JSON.stringify(devData);
 			socket.write(json)
+
+			mysqlDb.mysql.checkLight(userName,devData.id,devData.comm);
+			
 		})
 	}
 	else if(command === 'h20'){
