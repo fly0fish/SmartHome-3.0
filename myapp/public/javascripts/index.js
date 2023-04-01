@@ -58,6 +58,26 @@ function postData(equipmentId,actionString){
   });
 }
 
+function postDoorData(equipmentId,actionString){
+  // 发送控制指令
+  if(!equipmentId){
+    return console.log('没设备，不可发送指令')
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "/index/door/" + equipmentId,
+    data: actionString,
+    success: function (result) {
+      console.log('success');
+    },
+    error: function (error) {
+      console.log("error");
+      alert("错误：数据传输失败！");
+    }
+  });
+}
+
 function lightClick(input) {
   var id = input.getAttribute("id");
   var checked = input.checked;
@@ -66,6 +86,18 @@ function lightClick(input) {
     postData(equipmentId,{id:id,comm:'open'});
   }else{
     postData(equipmentId,{id:id,comm:'close'});
+  }
+  
+}
+
+function doorClick(input) {
+  var id = input.getAttribute("id");
+  var checked = input.checked;
+  console.log(checked);
+  if(checked){
+    postDoorData(equipmentId,{id:id,comm:'open'});
+  }else{
+    postDoorData(equipmentId,{id:id,comm:'close'});
   }
   
 }

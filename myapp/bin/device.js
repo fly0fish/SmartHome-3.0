@@ -93,6 +93,28 @@ function mq2Conn(id,callback){
 		})
 }
 
+//door连接
+function doorConn(id,callback){
+	var seSql = 'SELECT uid FROM switch WHERE id = ? ';
+		mysqlDb.mysql.find(seSql,[id],function (err,result) {
+			if(err){
+				// 保存数据失败只会影响历史数据的呈现。
+				console.log(id,"连接设备失败：",err)
+			}else if(result.length > 0){
+
+				var upSql = 'update switch set state = "1" where id = ?';
+					mysqlDb.mysql.update(upSql,[id],function (err) {
+						if(err){
+							// 保存数据失败只会影响历史数据的呈现。
+							console.log(id,"连接设备失败：",err)
+						}
+					})
+			}
+			callback(null,result);
+		})
+}
+
+
 //设备上传数据
 function devUp(id,status){
 	var seSql = 'SELECT id FROM device WHERE id = ? ';
@@ -162,6 +184,7 @@ module.exports = {
 	devUp:devUp,
 	dhtUserName:dhtUserName,
 	air:air,
-	hum:hum
+	hum:hum,
+	doorConn:doorConn
 
   }

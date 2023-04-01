@@ -87,6 +87,15 @@ const server = net.createServer((socket)=>{
 					socket.mq2 = json.mq2
 				}
 			});
+
+			device.doorConn(json.door,function(err,result){
+				if(err){
+					console.log('查询door失败')
+				}else if(result.length > 0){
+					socket.door = json.door
+				}
+			});
+
 		}else if(json.id === 200){
 			device.devUp(json.devId,json.status)
 
@@ -106,20 +115,29 @@ const server = net.createServer((socket)=>{
 		}else if(json.id === 400){
 
 			
-			mysqlDb.mysql.dhtUserName(socket.id,function(err,result){
+			device.dhtUserName(socket.id,function(err,result){
 				if(err){
 					console.log('查询失败')
 				}else if(result.length > 0){
 					var userName = result
 					var date = new Date();
 					mysqlDb.mysql.insertLog([userName,json.log,date])
-					mysqlDb.mysql.air(userName,json.acmode)
+					device.air(userName,json.acmode)
 				}
 			});
 			
 
 		}else if(json.id === 500){
-
+			device.dhtUserName(socket.id,function(err,result){
+				if(err){
+					console.log('查询失败')
+				}else if(result.length > 0){
+					var userName = result
+					var date = new Date();
+					mysqlDb.mysql.insertLog([userName,json.log,date])
+					device.hum(userName,json.hummode)
+				}
+			});
 		}
 	}
 	
@@ -242,9 +260,14 @@ function sentCommand(id,command,devData,userName) {
 			
 		})
 	}
-	else if(command === 'h20'){
+	else if(command === 'door'){
 		equipments.forEach((socket)=>{
-			socket.write("0", 'ascii')
+			const json = JSON.stringify(devData);
+			socket.write(json)
+
+			var date = new Date();
+			mysqlDb.mysql.insertLog([userName,'门禁' + devData.comm,date]);
+			
 		})
 	}
 

@@ -375,14 +375,37 @@
                   <span class="check-handler"></span>
                 </label>
               </div>
+              <% if(swi){ %>
+                <% if(swi[0]){ %>
+                 <% swi.forEach(items=> { %>
+                <div class="tm-block-div">
+                  <i class="fas fa-door-closed fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">门禁</span>
+                  <% if(items.state){ %>
+                    <input type="checkbox" name="door" id="<%= items.id %>"  onclick="doorClick(this)"
+                    <% if(items.status === "on"){ %> checked= "checked" <% }else if(items.status === "off"){ %>  <% } %>/>
+                    <label for="<%= items.id %>" class="check-box">
+                      <span class="check-handler"></span>
+                    </label>
+                    <% }else{ %>
+                      <span class="tm-block-text-right">未连接</span>
+                      <% } %>
+                    <% }); %>
+                </div>
+                <% }else{ %>
+                  <div class="tm-block-div">
+                    <i class="fas fa-door-closed fa-lg" style="color: white"></i>
+                    <span class="tm-block-text">门禁</span>
+                    <span class="tm-block-text-right">未连接</span>
+                  </div>
+                <% } %>
+              <% }else{ %>
               <div class="tm-block-div">
                 <i class="fas fa-door-closed fa-lg" style="color: white"></i>
                 <span class="tm-block-text">门禁</span>
-                <input type="checkbox" name="" id="custom7" />
-                <label for="custom7" class="check-box">
-                  <span class="check-handler"></span>
-                </label>
+                <span class="tm-block-text-right">未连接</span>
               </div>
+              <% } %>
               <% if(air){ %> <% air.forEach(items=> { %>
                 <div class="tm-block-div">
                   <i class="fas fa-tachometer-alt fa-lg" style="color: white"></i>
@@ -418,19 +441,13 @@
               </div>
               <% } %>
               <div class="tm-block-div">
-                <i class="fas fa-bath fa-lg" style="color: white"></i>
-                <span class="tm-block-text">洗浴</span>
+                <i class="fas fa-camera fa-lg" style="color: white"></i>
+                <span class="tm-block-text">家庭监控</span>
                 <span class="tm-block-text-right">未连接</span>
               </div>
-              <div class="tm-block-div">
-                <i
-                  class="fas fa-thermometer-half fa-lg"
-                  style="color: white"
-                ></i>
-                <span class="tm-block-text">洗浴水温</span>
-                <span class="tm-block-text-right">未连接</span>
-              </div>
-              <% if(mq2){ %> <% mq2.forEach(items=> { %>
+              <% if(mq2){ %> 
+                <% if(mq2[0]){ %>
+                <% mq2.forEach(items=> { %>
               <div class="tm-block-div">
                 <i class="fas fa-fire fa-lg" style="color: white"></i>
                 <span class="tm-block-text"><%= items.name %></span>
@@ -445,6 +462,13 @@
                 <% } %>
               </div>
               <% }); %>
+              <% }else{ %>
+                <div class="tm-block-div">
+                  <i class="fas fa-fire fa-lg" style="color: white"></i>
+                  <span class="tm-block-text">火灾预警</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <% } %>
                 <% }else{ %>
                   <div class="tm-block-div">
                     <i class="fas fa-fire fa-lg" style="color: white"></i>
@@ -472,13 +496,21 @@
                 <span class="tm-block-text-right">未连接</span>
               </div>
               <div class="tm-block-div">
-                <i class="fas fa-music fa-lg" style="color: white"></i>
-                <span class="tm-block-text">音乐</span>
+                <i class="fas fa-bath fa-lg" style="color: white"></i>
+                <span class="tm-block-text">洗浴</span>
                 <span class="tm-block-text-right">未连接</span>
               </div>
               <div class="tm-block-div">
-                <i class="fas fa-camera fa-lg" style="color: white"></i>
-                <span class="tm-block-text">家庭监控</span>
+                <i
+                  class="fas fa-thermometer-half fa-lg"
+                  style="color: white"
+                ></i>
+                <span class="tm-block-text">洗浴水温</span>
+                <span class="tm-block-text-right">未连接</span>
+              </div>
+              <div class="tm-block-div">
+                <i class="fas fa-music fa-lg" style="color: white"></i>
+                <span class="tm-block-text">音乐</span>
                 <span class="tm-block-text-right">未连接</span>
               </div>
               <div class="tm-block-div">

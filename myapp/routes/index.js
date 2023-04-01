@@ -25,12 +25,12 @@ router.get('/', function (req, res, next) {
 
           res.redirect(`/index/equipmentId/${equipmentId}`);
         } else {
-          res.render('index', { user: req.session.user, dht: null, light: null, mq2: null, air: null });
+          res.render('index', { user: req.session.user, dht: null, light: null, mq2: null, swi: null, air: null });
         }
       });
   } else {
     // console.log(user);
-    res.render('index', { user: null, dht: null, light: null, mq2: null, air: null });
+    res.render('index', { user: null, dht: null, light: null, mq2: null, swi: null, air: null });
   }
 
 });
@@ -46,17 +46,18 @@ router.get('/equipmentId/:id', function (req, res, next) {
   if (userName) {
     //查询用户温湿度,灯光数据
     mysqlDb.mysql.dbClient.query(
-      'SELECT tem,hum                                        FROM dht11_data     WHERE devId = ? ORDER BY id DESC LIMIT 1;' +
-      'SELECT light.id,light.name,light.state,light.status   FROM `user`,light   WHERE `user`.userName = ? AND `user`.uid = light.uid;' +
-      'SELECT mq2.id,mq2.name,mq2.state,mq2.status           FROM `user`,mq2     WHERE `user`.userName = ? AND `user`.uid = mq2.uid;' + 
-      'SELECT acandhum.acmode,acandhum.hummode               FROM acandhum       WHERE userName = ?;'
+      'SELECT tem,hum                                           FROM dht11_data     WHERE devId = ? ORDER BY id DESC LIMIT 1;' +
+      'SELECT light.id,light.name,light.state,light.status      FROM `user`,light   WHERE `user`.userName = ? AND `user`.uid = light.uid;' +
+      'SELECT mq2.id,mq2.name,mq2.state,mq2.status              FROM `user`,mq2     WHERE `user`.userName = ? AND `user`.uid = mq2.uid;' + 
+      'SELECT switch.id,switch.name,switch.state,switch.status  FROM `user`,switch  WHERE `user`.userName = ? AND `user`.uid = switch.uid;' + 
+      'SELECT acandhum.acmode,acandhum.hummode                  FROM acandhum       WHERE userName = ?;'
 
-      , [id, userName,userName,userName], function (err, data) {
+      , [id, userName,userName,userName,userName], function (err, data) {
         if (err) {
           throw err;
         } else {
           console.log(data);
-          res.render('index', { user: req.session.user, dht: data[0], light: data[1], mq2: data[2], air: data[3] });
+          res.render('index', { user: req.session.user, dht: data[0], light: data[1], mq2: data[2], swi: data[3], air: data[4] });
         }
       });
   } else {
@@ -168,6 +169,26 @@ router.post('/light/:id', function (req, res, next) {
   });
   console.log('post /light - ', req.params.id, req.body)
   tcpServer.sentCommand(req.params.id, 'light', req.body,userName)
+  res.send({ code: 0, msg: '命令已发送' })
+})
+
+// 向某设备发送 开/关 LED命令
+router.post('/door/:id', function (req, res, next) {
+  var userName = req.session.user?.userName;
+  var doorId = req.body.id;
+  if(req.body.comm === 'open'){
+    var upSql = 'update switch set status = "on" where id = ?';
+  }else{
+    var upSql = 'update switch set status = "off" where id = ?';
+  }
+
+  mysqlDb.mysql.update(upSql,doorId,function(err,result){
+    if(err){
+      console.log('修改door状态失败')
+    }
+  });
+  console.log('post /door - ', req.params.id, req.body)
+  tcpServer.sentCommand(req.params.id, 'door', req.body,userName)
   res.send({ code: 0, msg: '命令已发送' })
 })
 
