@@ -566,27 +566,35 @@
                 </div>
               <% } %>
               <h2 class="light-title">控制模式</h2>
+              <% if(mode){ %> 
+                <% mode.forEach(items=> { %>
               <div class="tm-block-div tm-block-div-l">
                 <span class="tm-block-text">旅行模式</span>
-                <input type="checkbox" name="lightMode" id="mode1"/>
+                <input type="checkbox" name="lightMode" id="mode1" onclick="outClick(this)" 
+                <% if(items.mode === 0){ %> <% }else if(items.mode === 1){ %> checked= "checked" <% }else{ %> <% } %>/>
                 <label for="mode1" class="check-box">
                   <span class="check-handler"></span>
                 </label>
               </div>
               <div class="tm-block-div tm-block-div-l">
                 <span class="tm-block-text">回家模式</span>
-                <input type="checkbox" name="lightMode" id="mode2"/>
+                <input type="checkbox" name="lightMode" id="mode2" onclick="inClick(this)" 
+                <% if(items.mode === 0){ %> <% }else if(items.mode === 2){ %> checked= "checked" <% }else{ %> <% } %>/>
                 <label for="mode2" class="check-box">
                   <span class="check-handler"></span>
                 </label>
               </div>
-              <!-- <div class="tm-block-div tm-block-div-l">
-                <span class="tm-block-text">氛围模式</span>
-                <input type="checkbox" name="lightMode" id="mode"/>
-                <label for="mode" class="check-box">
-                  <span class="check-handler"></span>
-                </label>
-              </div> -->
+              <% }); %>
+              <% }else{ %>
+                <div class="tm-block-div tm-block-div-l">
+                  <span class="tm-block-text">旅行模式</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <div class="tm-block-div tm-block-div-l">
+                  <span class="tm-block-text">回家模式</span>
+                  <span class="tm-block-text-right">未连接</span>
+                </div>
+                <% } %>
             </div>
           </div>
           <div class="col-12 tm-block-col">

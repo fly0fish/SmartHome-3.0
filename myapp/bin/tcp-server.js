@@ -269,6 +269,18 @@ function sentCommand(id,command,devData,userName) {
 			mysqlDb.mysql.insertLog([userName,'门禁' + devData.comm,date]);
 			
 		})
+	}else if(command === 'outmode'){
+		equipments.forEach((socket)=>{
+			const json = JSON.stringify(devData);
+			socket.write(json)
+			
+		})
+	}else if(command === 'inmode'){
+		equipments.forEach((socket)=>{
+			const json = JSON.stringify(devData);
+			socket.write(json)
+			
+		})
 	}
 
 }

@@ -62,8 +62,9 @@ router.post('/register', function login(req, res) {
                 mysqlDb.mysql.dbClient.query(
                     'INSERT INTO user(uid,userName,userPwd) VALUES(0,?,?);'+
                     'INSERT INTO category(id,userName) VALUES(0,?);'+
-                    'INSERT INTO user_data(userName) VALUES(?);'
-                , [userName, userPwd,userName,userName], function (err, result) {
+                    'INSERT INTO user_data(userName) VALUES(?);'+
+                    'INSERT INTO mode(id,userName,mode) VALUES(0,?,0);'
+                , [userName, userPwd,userName,userName,userName], function (err, result) {
                     if (err) {
                         res.send('<script>alert("注册失败，请联系管理员！");history.back()</script>');
                         throw err;
