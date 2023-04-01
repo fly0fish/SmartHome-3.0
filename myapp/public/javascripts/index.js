@@ -177,33 +177,34 @@ function outClick(elem) {
     document.getElementById("mode2").checked = false;
 
 
-    // 获取所有name为light的input元素
     const lightInputs = document.getElementsByName("light");
     const doorInputs = document.getElementsByName("door");
 
-    // 遍历每个元素，判断checked属性是否为true，若为true则触发点击事件
-    for (let i = 0; i < lightInputs.length; i++) {
-      if (lightInputs[i].checked) {
-        setTimeout(function () {
-          lightInputs[i].click();
-        }, i * 1000); // 延时 1 秒执行
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms)); // 定义一个wait函数，用于创建Promise对象
+
+    const handleClick = async (input, delay) => {
+      await wait(delay); // 等待delay毫秒
+      input.click(); // 点击input
+    };
+
+    const handleDoorInputs = async () => {
+      for (let i = 0; i < doorInputs.length; i++) {
+        if (doorInputs[i].checked) {
+          await handleClick(doorInputs[i], 1000); // 等待500毫秒后点击input
+        }
       }
-    }
+    };
 
-    for (let i = 0; i < doorInputs.length; i++) {
-      if (doorInputs[i].checked) {
-        setTimeout(function () {
-          doorInputs[i].click();
-        }, i * 1000); // 延时 1 秒执行
-
+    const handleLightInputs = async () => {
+      for (let i = 0; i < lightInputs.length; i++) {
+        if (lightInputs[i].checked) {
+          await handleClick(lightInputs[i], i * 2000); // 等待i * 2000毫秒后点击input
+        }
       }
-    }
+    };
 
-    // 点击旅行模式时，触发name为'light'且checked属性为'checked'的input框被点击
-    // const lightInput = document.querySelector('input[name="light"][checked="checked"]');
-    // if(lightInput){
-    //   lightInput.checked = false;
-    // }
+    handleDoorInputs();
+    handleLightInputs();
 
 
 
@@ -240,28 +241,36 @@ function inClick(elem) {
   if (elem.checked) {
     document.getElementById("mode1").checked = false;
 
-    // 获取所有name为light的input元素
     const lightInputs = document.getElementsByName("light");
     const doorInputs = document.getElementsByName("door");
 
-    // 遍历每个元素，判断checked属性是否为true，若为true则触发点击事件
-    for (let i = 0; i < lightInputs.length; i++) {
-      if (lightInputs[i].checked === false) {
-        setTimeout(function () {
-          lightInputs[i].click();
-        }, i * 1000); // 延时 1 秒执行
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms)); // 定义一个wait函数，用于创建Promise对象
 
+    const handleClick = async (input, delay) => {
+      await wait(delay); // 等待delay毫秒
+      input.click(); // 点击input
+    };
+
+    const handleDoorInputs = async () => {
+      for (let i = 0; i < doorInputs.length; i++) {
+        if (doorInputs[i].checked === false) {
+          await handleClick(doorInputs[i], 1000); // 等待500毫秒后点击input
+        }
       }
-    }
+    };
 
-    for (let i = 0; i < doorInputs.length; i++) {
-      if (doorInputs[i].checked  === false) {
-        setTimeout(function () {
-          doorInputs[i].click();
-        }, i * 1000); // 延时 1 秒执行
-
+    const handleLightInputs = async () => {
+      for (let i = 0; i < lightInputs.length; i++) {
+        if (lightInputs[i].checked === false) {
+          await handleClick(lightInputs[i], i * 2000); // 等待i * 2000毫秒后点击input
+        }
       }
-    }
+    };
+
+    handleDoorInputs();
+    handleLightInputs();
+
+
 
     $.ajax({
       type: "POST",
