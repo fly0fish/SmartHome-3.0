@@ -1,6 +1,7 @@
 # README
-demo2例程。
+SmartHome
 ```bash
+#修改数据库文件mysql
 # 安装依赖
 npm install
 # 运行
